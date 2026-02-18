@@ -2,9 +2,11 @@
   display: flex;
   justify-content: center;
   margin-top: auto;
-  padding: 18px;
-  background: rgba(255, 255, 255, 0.03);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 22px;
+  background: linear-gradient(90deg, rgba(255, 71, 87, 0.12), rgba(124, 58, 237, 0.14), rgba(16, 185, 129, 0.12));
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
   color: var(--muted);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }

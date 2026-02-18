@@ -12,7 +12,7 @@ const Header = () => {
 
   return (
     <nav className={styles.navbarContainer}>
-      <h1>My Website</h1>
+      <h1>Tito Street</h1>
       <ul className={styles.menuList}>
         {menuList.map((item, index) => (
           <li key={index}>

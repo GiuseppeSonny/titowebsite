@@ -6,6 +6,9 @@ import Footer from "./componets/Header/footer/Footer";
 import About from "./pages/aboutUs/About";
 import Contacts from "./pages/contacts/Contacts";
 import Works from "./pages/works/Works";
+import InternalWorks from "./pages/works/InternalWorks";
+import ExternalWorks from "./pages/works/ExternalWorks";
+import FutureWorks from "./pages/works/FutureWorks";
 import Home from "./pages/home/Home";
 
 function App() {
@@ -19,6 +22,9 @@ function App() {
             <Route path="/about" exact element={<About />} />
             <Route path="/contacts" element={<Contacts />} />
             <Route path="/works" element={<Works />} />
+            <Route path="/works/internal" element={<InternalWorks />} />
+            <Route path="/works/external" element={<ExternalWorks />} />
+            <Route path="/works/future" element={<FutureWorks />} />
           </Routes>
         </div>
         <Footer />

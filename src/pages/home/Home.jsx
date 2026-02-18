@@ -4,19 +4,19 @@ import styles from "./home.module.scss";
 const Home = () => {
   const highlights = [
     {
-      title: "Design that feels alive",
-      body: "We craft digital experiences with bold typography, layered gradients, and purposeful motion.",
-      badge: "Creative",
+      title: "Walls into stories",
+      body: "Murals that bend neon, grime, and poetry into one living surface.",
+      badge: "Graffiti",
     },
     {
-      title: "Engineering with intent",
-      body: "From prototypes to production, we build performant, accessible, and maintainable products.",
-      badge: "Technical",
+      title: "Digital drips",
+      body: "Motion-led web pieces that feel like wet paint sliding under light.",
+      badge: "Motion",
     },
     {
-      title: "Partnership mindset",
-      body: "We collaborate closely, iterating fast and measuring impact to ship work that matters.",
-      badge: "Trusted",
+      title: "Pop-up energy",
+      body: "Installations and merch drops that pull crowds like fresh tags on dawn trains.",
+      badge: "Live",
     },
   ];
 
@@ -24,30 +24,30 @@ const Home = () => {
     <div className={styles.home}>
       <section className={styles.hero}>
         <div className={styles.heroContent}>
-          <p className={styles.kicker}>Studio / 2025</p>
+          <p className={styles.kicker}>Street Artist / 2025</p>
           <h1>
-            Crafted interfaces
-            <span> that spark emotion</span>
+            Stencils on concrete
+            <span> that glow after dark</span>
           </h1>
           <p className={styles.subhead}>
-            We blend expressive visuals with thoughtful engineering to build products people love to use every day.
+            Raw blacks, bright reds, and layered wheatpaste textures—urban stories sprayed loud across the city.
           </p>
           <div className={styles.ctaRow}>
-            <button className={styles.primaryCta}>View Works</button>
-            <button className={styles.secondaryCta}>Book a Call</button>
+            <button className={styles.primaryCta}>View the stencils</button>
+            <button className={styles.secondaryCta}>Commission a wall</button>
           </div>
           <div className={styles.metrics}>
             <div>
-              <span>48</span>
-              <p>Projects shipped</p>
+              <span>73</span>
+              <p>Murals painted</p>
             </div>
             <div>
-              <span>12</span>
-              <p>Industries served</p>
+              <span>18</span>
+              <p>Cities tagged</p>
             </div>
             <div>
-              <span>5⭐</span>
-              <p>Client rating</p>
+              <span>∞</span>
+              <p>Ideas in ink</p>
             </div>
           </div>
         </div>
@@ -56,21 +56,21 @@ const Home = () => {
           <div className={styles.cardStack}>
             <div className={styles.cardPrimary}>
               <p>Current focus</p>
-              <h3>Immersive web stories</h3>
-              <span>Next-gen interactions</span>
+              <h3>Night train murals</h3>
+              <span>Neon, chrome, grit</span>
             </div>
             <div className={styles.cardSecondary}>
               <p>Tech stack</p>
               <div className={styles.chips}>
-                {"React · Vite · SCSS · GSAP".split(" · ").map((tech) => (
+                {"Spray · Ink · Light · React".split(" · ").map((tech) => (
                   <span key={tech}>{tech}</span>
                 ))}
               </div>
             </div>
             <div className={styles.cardTertiary}>
               <p>Upcoming drop</p>
-              <h4>Aurora dashboard</h4>
-              <small>Releasing Q2</small>
+              <h4>Subway Bloom</h4>
+              <small>Spring equinox</small>
             </div>
           </div>
         </div>

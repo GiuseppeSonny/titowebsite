@@ -1,46 +1,71 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import styles from "./works.module.scss";
 
 const projects = [
   {
-    title: "Aurora Dashboard",
-    desc: "Data-rich admin with live charts, playful gradients, and buttery micro-interactions.",
-    tags: ["React", "D3", "GSAP"],
+    title: "Neon Pulse",
+    desc: "6-meter mural under the ring road — chrome letters pulsing with UV ink and hidden blacklight poetry.",
+    tags: ["UV Ink", "Chrome", "Lettering"],
     link: "#",
   },
   {
-    title: "Field Mobile",
-    desc: "Offline-first field app with GPS workflows and snappy transitions for techs on the go.",
-    tags: ["React Native", "Maps", "Offline"],
+    title: "Ghost Lines",
+    desc: "Projection-mapped trains painted in motion; layers of aerosol, light, and glitchy typographic loops.",
+    tags: ["Projection", "Motion", "Graffiti"],
     link: "#",
   },
   {
-    title: "Storysite",
-    desc: "Immersive marketing page featuring scroll-driven storytelling and cinematic visuals.",
-    tags: ["Vite", "Animations", "CMS"],
+    title: "Concrete Bloom",
+    desc: "Abandoned warehouse takeover with fluorescent flora, cut vinyl stickers, and a breathing soundbed.",
+    tags: ["Fluoro", "Stickers", "Sound"],
     link: "#",
   },
 ];
 
 const Works = () => {
+  const [open, setOpen] = useState(false);
+  const categories = [
+    { label: "Internal works", path: "/works/internal" },
+    { label: "External works", path: "/works/external" },
+    { label: "Future works", path: "/works/future" },
+  ];
+
   return (
     <div className={styles.main}>
       <div className={styles.headerRow}>
         <div>
-          <p className={styles.kicker}>Selected Work</p>
-          <h2>Recent builds that ship</h2>
+          <p className={styles.kicker}>Selected Walls</p>
+          <h2>Recent drops and takeovers</h2>
           <p className={styles.subhead}>
-            A quick peek at the products we crafted across SaaS, mobile, and interactive web.
+            Murals, projection pieces, and pop-up installs dripping with neon gradients and raw texture.
           </p>
         </div>
-        <button className={styles.cta}>Request full portfolio</button>
+        <div className={styles.actions}>
+          <button className={styles.cta}>Request the full drop list</button>
+          <div className={`${styles.dropdown} ${open ? styles.open : ""}`}>
+            <button className={styles.dropdownToggle} onClick={() => setOpen((v) => !v)}>
+              Categories
+              <span className={styles.chevron}>{open ? "▲" : "▼"}</span>
+            </button>
+            {open && (
+              <div className={styles.dropdownMenu}>
+                {categories.map((cat) => (
+                  <Link key={cat.path} to={cat.path} onClick={() => setOpen(false)}>
+                    {cat.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       <div className={styles.grid}>
         {projects.map((project) => (
           <article key={project.title} className={styles.card}>
             <div className={styles.cardHead}>
-              <div className={styles.pill}>Launch ready</div>
+              <div className={styles.pill}>Fresh paint</div>
               <a href={project.link} className={styles.link}>
                 View →
               </a>
