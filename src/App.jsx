@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Header from "./componets/Header/Header";
@@ -12,10 +12,13 @@ import FutureWorks from "./pages/works/FutureWorks";
 import Home from "./pages/home/Home";
 
 function App() {
+  const [theme, setTheme] = useState("dark");
+  const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
+
   return (
     <Router>
-      <div className="App">
-        <Header />
+      <div className={`App ${theme === "light" ? "theme-light" : "theme-dark"}`}>
+        <Header theme={theme} onToggleTheme={toggleTheme} />
         <div className="routes">
           <Routes>
             <Route path="/" exact element={<Home />} />

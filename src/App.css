@@ -20,6 +20,17 @@
   overflow-x: hidden;
 }
 
+.theme-light {
+  --bg: radial-gradient(circle at 16% 12%, rgba(0, 0, 0, 0.04), transparent 24%),
+    radial-gradient(circle at 78% 10%, rgba(0, 0, 0, 0.03), transparent 30%),
+    linear-gradient(140deg, #f6f7f9 0%, #eaeef3 45%, #f6f7f9 100%);
+  --panel: rgba(0, 0, 0, 0.04);
+  --text: #0f172a;
+  --muted: #334155;
+  --accent: linear-gradient(135deg, #111827, #e63946);
+  --outline: rgba(0, 0, 0, 0.12);
+}
+
 .routes {
   flex: 1;
   max-width: 1180px;
