@@ -102,36 +102,36 @@ const Works = () => {
 
       {modalOpen && (
         <div className={styles.modalOverlay} onClick={closeModal}>
-          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-            <button className={styles.closeButton} onClick={closeModal}>×</button>
-            <div className={styles.modalContent}>
-              <div className={styles.cardHead}>
-                <div className={styles.pill}>Fresh paint</div>
-                <a href={projects[selectedCard].link} className={styles.link}>
-                  View →
-                </a>
+            <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+              <button className={styles.closeButton} onClick={closeModal}>×</button>
+              <div className={styles.modalContent}>
+                <div className={styles.cardHead}>
+                  <div className={styles.pill}>Fresh paint</div>
+                  <a href={projects[selectedCard].link} className={styles.link}>
+                    View →
+                  </a>
+                </div>
+                <h3>{projects[selectedCard].title}</h3>
+                <p>{projects[selectedCard].desc}</p>
+                <div className={styles.tags}>
+                  {projects[selectedCard].tags.map((tag) => (
+                    <span key={tag}>{tag}</span>
+                  ))}
+                </div>
               </div>
-              <h3>{projects[selectedCard].title}</h3>
-              <p>{projects[selectedCard].desc}</p>
-              <div className={styles.tags}>
-                {projects[selectedCard].tags.map((tag) => (
-                  <span key={tag}>{tag}</span>
-                ))}
+              <div className={styles.modalNavigation}>
+                <button className={styles.navButton} onClick={prevCard} disabled={projects.length <= 1}>
+                  ← Previous
+                </button>
+                <span className={styles.cardCounter}>
+                  {selectedCard + 1} / {projects.length}
+                </span>
+                <button className={styles.navButton} onClick={nextCard} disabled={projects.length <= 1}>
+                  Next →
+                </button>
               </div>
-            </div>
-            <div className={styles.modalNavigation}>
-              <button className={styles.navButton} onClick={prevCard} disabled={projects.length <= 1}>
-                ← Previous
-              </button>
-              <span className={styles.cardCounter}>
-                {selectedCard + 1} / {projects.length}
-              </span>
-              <button className={styles.navButton} onClick={nextCard} disabled={projects.length <= 1}>
-                Next →
-              </button>
             </div>
           </div>
-        </div>
       )}
     </div>
   );
