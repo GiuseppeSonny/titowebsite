@@ -34,11 +34,14 @@ const Works = () => {
   ];
 
   const openModal = (index) => {
+    console.log('Card clicked:', index);
+    alert('Card clicked: ' + index);
     setSelectedCard(index);
     setModalOpen(true);
   };
 
   const closeModal = () => {
+    console.log('Modal closing');
     setModalOpen(false);
   };
 
@@ -100,9 +103,33 @@ const Works = () => {
         ))}
       </div>
 
+      {/* Debug indicator */}
+      <div style={{position: 'fixed', top: '10px', right: '10px', background: 'red', color: 'white', padding: '5px', zIndex: 9999}}>
+        Modal State: {modalOpen ? 'OPEN' : 'CLOSED'} | Card: {selectedCard + 1}
+      </div>
+
       {modalOpen && (
-        <div className={styles.modalOverlay} onClick={closeModal}>
-            <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.modalOverlay} onClick={closeModal} style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.8)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000
+        }}>
+            <div className={styles.modal} onClick={(e) => e.stopPropagation()} style={{
+              background: 'linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.32))',
+              border: '1px solid rgba(255, 255, 255, 0.16)',
+              borderRadius: '18px',
+              padding: '24px',
+              maxWidth: '500px',
+              width: '90%',
+              position: 'relative'
+            }}>
               <button className={styles.closeButton} onClick={closeModal}>×</button>
               <div className={styles.modalContent}>
                 <div className={styles.cardHead}>
