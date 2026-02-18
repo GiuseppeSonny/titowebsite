@@ -1,22 +1,31 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./home.module.scss";
 
 const Home = () => {
+  const navigate = useNavigate();
+  
   const highlights = [
     {
       title: "Walls into stories",
       body: "Murals that bend neon, grime, and poetry into one living surface.",
       badge: "Graffiti",
+      image: "https://picsum.photos/seed/wallsstories/400/250.jpg",
+      link: "/works"
     },
     {
       title: "Digital drips",
       body: "Motion-led web pieces that feel like wet paint sliding under light.",
       badge: "Motion",
+      image: "https://picsum.photos/seed/digitaldrips/400/250.jpg",
+      link: "/works"
     },
     {
       title: "Pop-up energy",
       body: "Installations and merch drops that pull crowds like fresh tags on dawn trains.",
       badge: "Live",
+      image: "https://picsum.photos/seed/popupenergy/400/250.jpg",
+      link: "/works"
     },
   ];
 
@@ -78,7 +87,10 @@ const Home = () => {
 
       <section className={styles.highlights}>
         {highlights.map((item) => (
-          <article key={item.title} className={styles.highlightCard}>
+          <article key={item.title} className={styles.highlightCard} onClick={() => navigate(item.link)}>
+            <div className={styles.highlightImage}>
+              <img src={item.image} alt={item.title} />
+            </div>
             <span className={styles.badge}>{item.badge}</span>
             <h3>{item.title}</h3>
             <p>{item.body}</p>
