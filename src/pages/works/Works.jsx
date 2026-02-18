@@ -30,24 +30,11 @@ const Works = () => {
   const [open, setOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(0);
-  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, right: 0 });
-  const dropdownRef = React.useRef(null);
   const categories = [
     { label: "Internal works", path: "/works/internal" },
     { label: "External works", path: "/works/external" },
     { label: "Future works", path: "/works/future" },
   ];
-
-  const openDropdown = () => {
-    if (dropdownRef.current) {
-      const rect = dropdownRef.current.getBoundingClientRect();
-      setDropdownPosition({
-        top: rect.bottom + 8,
-        right: window.innerWidth - rect.right
-      });
-    }
-    setOpen(true);
-  };
 
   const openModal = (index) => {
     setSelectedCard(index);
@@ -78,16 +65,13 @@ const Works = () => {
         </div>
         <div className={styles.actions}>
           <button className={styles.cta}>Request the full drop list</button>
-          <div className={`${styles.dropdown} ${open ? styles.open : ""}`} ref={dropdownRef}>
-            <button className={styles.dropdownToggle} onClick={openDropdown}>
+          <div className={`${styles.dropdown} ${open ? styles.open : ""}`}>
+            <button className={styles.dropdownToggle} onClick={() => setOpen((v) => !v)}>
               Categories
               <span className={styles.chevron}>{open ? "▲" : "▼"}</span>
             </button>
             {open && (
-              <div 
-                className={styles.dropdownMenu} 
-                style={{ top: `${dropdownPosition.top}px`, right: `${dropdownPosition.right}px` }}
-              >
+              <div className={styles.dropdownMenu}>
                 {categories.map((cat) => (
                   <Link key={cat.path} to={cat.path} onClick={() => setOpen(false)}>
                     {cat.label}
