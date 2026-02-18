@@ -18,6 +18,8 @@
   gap: 10px;
   align-items: center;
   flex-wrap: wrap;
+  position: relative;
+  z-index: 101;
 }
 
 .kicker {
@@ -52,6 +54,7 @@
 
 .dropdown {
   position: relative;
+  z-index: 100;
 }
 
 .dropdownToggle {
@@ -75,9 +78,7 @@
 }
 
 .dropdownMenu {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
+  position: fixed;
   min-width: 190px;
   background: rgba(0, 0, 0, 0.32);
   border: 1px solid rgba(255, 255, 255, 0.16);
@@ -86,7 +87,7 @@
   padding: 10px;
   display: grid;
   gap: 6px;
-  z-index: 5;
+  z-index: 9999;
 }
 
 .dropdownMenu a {
