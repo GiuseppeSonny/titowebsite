@@ -9,6 +9,7 @@ import Works from "./pages/works/Works";
 import InternalWorks from "./pages/works/InternalWorks";
 import ExternalWorks from "./pages/works/ExternalWorks";
 import FutureWorks from "./pages/works/FutureWorks";
+import OldWorks from "./pages/works/OldWorks";
 import Home from "./pages/home/Home";
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
             <Route path="/works/internal" element={<InternalWorks />} />
             <Route path="/works/external" element={<ExternalWorks />} />
             <Route path="/works/future" element={<FutureWorks />} />
+            <Route path="/works/old" element={<OldWorks />} />
           </Routes>
         </div>
         <Footer />

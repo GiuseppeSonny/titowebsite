@@ -34,6 +34,7 @@ const Works = () => {
     { label: "Internal works", path: "/works/internal" },
     { label: "External works", path: "/works/external" },
     { label: "Future works", path: "/works/future" },
+    { label: "Old works", path: "/works/old" },
   ];
 
   const openModal = (index) => {
