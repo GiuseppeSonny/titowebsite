@@ -13,7 +13,7 @@ import OldWorks from "./pages/works/OldWorks";
 import Home from "./pages/home/Home";
 
 function App() {
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState("light");
   const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 
   return (

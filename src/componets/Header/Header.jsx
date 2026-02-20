@@ -13,7 +13,7 @@ const Header = ({ theme = "dark", onToggleTheme }) => {
   return (
     <nav className={styles.navbarContainer}>
       <div className={styles.brandRow}>
-        <h1>TIEFFE</h1>
+        <h1>TIEFFE artworks</h1>
         <button className={styles.themeToggle} onClick={onToggleTheme}>
           {theme === "light" ? "Night" : "Day"}
         </button>

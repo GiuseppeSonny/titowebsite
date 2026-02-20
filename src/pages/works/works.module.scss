@@ -111,6 +111,50 @@
   background: rgba(255, 255, 255, 0.08);
 }
 
+/* Light theme dropdown styles */
+:global(.theme-light) .dropdownMenu {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.15);
+}
+
+:global(.theme-light) .dropdownMenu a {
+  color: #1f2937;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid transparent;
+}
+
+:global(.theme-light) .dropdownMenu a:hover {
+  border-color: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.1);
+  color: #111827;
+}
+
+/* Light theme CTA button styles */
+:global(.theme-light) .cta {
+  background: linear-gradient(135deg, #e63946, #f87171);
+  color: #ffffff;
+  box-shadow: 0 12px 30px rgba(230, 57, 70, 0.3);
+}
+
+:global(.theme-light) .cta:hover {
+  box-shadow: 0 14px 35px rgba(230, 57, 70, 0.4);
+}
+
+/* Light theme dropdown toggle styles */
+:global(.theme-light) .dropdownToggle {
+  background: rgba(0, 0, 0, 0.08);
+  color: #1f2937;
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.1);
+}
+
+:global(.theme-light) .dropdownToggle:hover {
+  background: rgba(0, 0, 0, 0.12);
+  border-color: rgba(0, 0, 0, 0.25);
+  color: #111827;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -279,6 +323,79 @@
   gap: 16px;
   padding-top: 16px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Light theme modal styles */
+:global(.theme-light) .modalOverlay {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+:global(.theme-light) .modal {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.9));
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.2);
+}
+
+:global(.theme-light) .closeButton {
+  background: rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  color: #1f2937;
+}
+
+:global(.theme-light) .closeButton:hover {
+  background: rgba(230, 57, 70, 0.1);
+  border-color: rgba(230, 57, 70, 0.3);
+  color: #e63946;
+}
+
+:global(.theme-light) .modalNavigation {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+:global(.theme-light) .navButton {
+  background: rgba(0, 0, 0, 0.08);
+  color: #1f2937;
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+:global(.theme-light) .navButton:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.12);
+  border-color: rgba(0, 0, 0, 0.25);
+  color: #111827;
+}
+
+:global(.theme-light) .cardCounter {
+  color: #64748b;
+}
+
+/* Light theme modal content styles */
+:global(.theme-light) .modalContent .cardImage {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+:global(.theme-light) .modalContent h3 {
+  color: #1f2937;
+}
+
+:global(.theme-light) .modalContent p {
+  color: #64748b;
+}
+
+:global(.theme-light) .modalContent .pill {
+  background: rgba(230, 57, 70, 0.1);
+  border: 1px solid rgba(230, 57, 70, 0.3);
+  color: #e63946;
+}
+
+:global(.theme-light) .modalContent .link {
+  color: #1f2937;
+}
+
+:global(.theme-light) .modalContent .tags span {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #475569;
 }
 
 .navButton {
