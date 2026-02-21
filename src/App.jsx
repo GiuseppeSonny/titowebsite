@@ -11,6 +11,7 @@ import ExternalWorks from "./pages/works/ExternalWorks";
 import FutureWorks from "./pages/works/FutureWorks";
 import OldWorks from "./pages/works/OldWorks";
 import Home from "./pages/home/Home";
+import Photos from "./pages/photos/Photos";
 import AdminPage from "./admin/AdminPage";
 import { AuthProvider } from "./context/AuthContext";
 import { DataProvider } from "./context/DataContext";
@@ -32,6 +33,7 @@ const AppLayout = ({ theme, toggleTheme }) => {
           <Route path="/works/external" element={<ExternalWorks />} />
           <Route path="/works/future" element={<FutureWorks />} />
           <Route path="/works/old" element={<OldWorks />} />
+          <Route path="/photos" element={<Photos />} />
           <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </div>

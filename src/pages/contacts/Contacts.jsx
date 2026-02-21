@@ -1,12 +1,20 @@
 import React from "react";
 import styles from "./contacts.module.scss";
+import { useData } from "../../context/DataContext";
 
 const Contacts = () => {
+  const { contacts } = useData();
+
   const info = [
-    { label: "Email", value: "hello@studio.com" },
-    { label: "Phone", value: "+1 (555) 123-4567" },
-    { label: "Location", value: "Remote / EU" },
-  ];
+    { label: "Email", value: contacts.email },
+    { label: "Phone", value: contacts.phone },
+    { label: "Location", value: contacts.location },
+  ].filter((item) => item.value);
+
+  const socials = [
+    contacts.instagram && { label: "Instagram", value: contacts.instagram },
+    contacts.twitter && { label: "Twitter / X", value: contacts.twitter },
+  ].filter(Boolean);
 
   return (
     <div className={styles.main}>
@@ -18,6 +26,12 @@ const Contacts = () => {
         </p>
         <div className={styles.infoGrid}>
           {info.map((item) => (
+            <div key={item.label} className={styles.infoCard}>
+              <span>{item.label}</span>
+              <strong>{item.value}</strong>
+            </div>
+          ))}
+          {socials.map((item) => (
             <div key={item.label} className={styles.infoCard}>
               <span>{item.label}</span>
               <strong>{item.value}</strong>

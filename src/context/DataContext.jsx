@@ -6,6 +6,7 @@ import {
   deleteDoc,
   doc,
   onSnapshot,
+  setDoc,
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../firebase/firebase";
@@ -90,12 +91,12 @@ export const DataProvider = ({ children }) => {
     );
 
     const unsubAbout = onSnapshot(
-      collection(db, "about"),
+      doc(db, "about", "main"),
       (snap) => {
-        if (snap.empty) {
-          setAbout(defaultAbout);
+        if (snap.exists()) {
+          setAbout({ id: snap.id, ...snap.data() });
         } else {
-          setAbout({ id: snap.docs[0].id, ...snap.docs[0].data() });
+          setAbout(defaultAbout);
         }
         setReady((r) => ({ ...r, about: true }));
       },
@@ -103,12 +104,12 @@ export const DataProvider = ({ children }) => {
     );
 
     const unsubContacts = onSnapshot(
-      collection(db, "contacts"),
+      doc(db, "contacts", "main"),
       (snap) => {
-        if (snap.empty) {
-          setContacts(defaultContacts);
+        if (snap.exists()) {
+          setContacts({ id: snap.id, ...snap.data() });
         } else {
-          setContacts({ id: snap.docs[0].id, ...snap.docs[0].data() });
+          setContacts(defaultContacts);
         }
         setReady((r) => ({ ...r, contacts: true }));
       },
@@ -215,11 +216,7 @@ export const DataProvider = ({ children }) => {
   // About update
   const updateAbout = async (data) => {
     try {
-      if (about.id) {
-        await updateDoc(doc(db, "about", about.id), data);
-      } else {
-        await addDoc(collection(db, "about"), data);
-      }
+      await setDoc(doc(db, "about", "main"), data, { merge: true });
     } catch (err) {
       console.error("updateAbout failed", err);
       throw err;
@@ -229,11 +226,7 @@ export const DataProvider = ({ children }) => {
   // Contacts update
   const updateContacts = async (data) => {
     try {
-      if (contacts.id) {
-        await updateDoc(doc(db, "contacts", contacts.id), data);
-      } else {
-        await addDoc(collection(db, "contacts"), data);
-      }
+      await setDoc(doc(db, "contacts", "main"), data, { merge: true });
     } catch (err) {
       console.error("updateContacts failed", err);
       throw err;

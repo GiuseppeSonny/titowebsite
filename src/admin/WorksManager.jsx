@@ -4,11 +4,11 @@ import styles from "./admin.module.scss";
 
 const CATEGORIES = ["recent", "internal", "external", "future", "old"];
 
-const emptyWork = { title: "", desc: "", tags: "", image: "", link: "#", category: "recent" };
+const makeEmptyWork = (category = "recent") => ({ title: "", desc: "", tags: "", image: "", link: "#", category });
 
 const WorksManager = () => {
   const { works, addWork, updateWork, deleteWork } = useData();
-  const [form, setForm] = useState(emptyWork);
+  const [form, setForm] = useState(makeEmptyWork());
   const [editingId, setEditingId] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -31,7 +31,7 @@ const WorksManager = () => {
       } else {
         await addWork(payload);
       }
-      setForm(emptyWork);
+      setForm(makeEmptyWork(filterCat === "all" ? "recent" : filterCat));
       setEditingId(null);
       setShowForm(false);
     } catch (err) {
@@ -54,7 +54,7 @@ const WorksManager = () => {
   };
 
   const handleCancel = () => {
-    setForm(emptyWork);
+    setForm(makeEmptyWork(filterCat === "all" ? "recent" : filterCat));
     setEditingId(null);
     setShowForm(false);
   };
@@ -65,7 +65,7 @@ const WorksManager = () => {
     <div className={styles.managerSection}>
       <div className={styles.managerHeader}>
         <h2>Works</h2>
-        <button className={styles.addBtn} onClick={() => { setShowForm(true); setEditingId(null); setForm(emptyWork); }}>
+        <button className={styles.addBtn} onClick={() => { setShowForm(true); setEditingId(null); setForm(makeEmptyWork(filterCat === "all" ? "recent" : filterCat)); }}>
           + Add Work
         </button>
       </div>

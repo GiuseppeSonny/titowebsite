@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useData } from "../context/DataContext";
+import { useNavigate } from "react-router-dom";
 import WorksManager from "./WorksManager";
 import EventsManager from "./EventsManager";
 import PhotosManager from "./PhotosManager";
@@ -21,6 +22,12 @@ const AdminDashboard = () => {
   const { user, logout } = useAuth();
   const { works, events, photos } = useData();
   const [activeTab, setActiveTab] = useState("overview");
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
+  };
 
   const renderContent = () => {
     switch (activeTab) {
@@ -77,6 +84,7 @@ const AdminDashboard = () => {
         <div className={styles.sidebarBrand}>
           <span>⚡</span>
           <span>Admin</span>
+          <button className={styles.siteBtn} onClick={() => navigate("/")} title="Go to site">← Site</button>
         </div>
         <nav className={styles.sidebarNav}>
           {TABS.map((tab) => (
@@ -96,7 +104,7 @@ const AdminDashboard = () => {
             <strong>{user?.displayName}</strong>
             <small>{user?.email}</small>
           </div>
-          <button className={styles.logoutBtn} onClick={logout} title="Sign out">⏻</button>
+          <button className={styles.logoutBtn} onClick={handleLogout} title="Sign out">Sign out</button>
         </div>
       </aside>
       <main className={styles.dashboardMain}>

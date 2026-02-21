@@ -6,15 +6,8 @@ import { useData } from "../../context/DataContext";
 const Works = () => {
   const { works } = useData();
   const projects = works.filter((w) => w.category === "recent" || !w.category);
-  const [open, setOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(0);
-  const categories = [
-    { label: "Internal works", path: "/works/internal" },
-    { label: "External works", path: "/works/external" },
-    { label: "Future works", path: "/works/future" },
-    { label: "Old works", path: "/works/old" },
-  ];
 
   const openModal = (index) => {
     setSelectedCard(index);
@@ -42,24 +35,6 @@ const Works = () => {
           <p className={styles.subhead}>
             Murals, projection pieces, and pop-up installs dripping with neon gradients and raw texture.
           </p>
-        </div>
-        <div className={styles.actions}>
-          <button className={styles.cta}>Request the full drop list</button>
-          <div className={`${styles.dropdown} ${open ? styles.open : ""}`}>
-            <button className={styles.dropdownToggle} onClick={() => setOpen((v) => !v)}>
-              Categories
-              <span className={styles.chevron}>{open ? "▲" : "▼"}</span>
-            </button>
-            {open && (
-              <div className={styles.dropdownMenu}>
-                {categories.map((cat) => (
-                  <Link key={cat.path} to={cat.path} onClick={() => setOpen(false)}>
-                    {cat.label}
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
         </div>
       </div>
 

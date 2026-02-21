@@ -5,7 +5,7 @@ import { useData } from "../../context/DataContext";
 
 const Home = () => {
   const navigate = useNavigate();
-  const { events: rawEvents } = useData();
+  const { events: rawEvents, photos } = useData();
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
@@ -14,29 +14,13 @@ const Home = () => {
     date: e.date instanceof Date ? e.date : new Date(e.date + "T12:00:00"),
   }));
 
-  const highlights = [
-    {
-      title: "Walls into stories",
-      body: "Murals that bend neon, grime, and poetry into one living surface.",
-      badge: "Graffiti",
-      image: "https://picsum.photos/seed/wallsstories/400/250.jpg",
-      link: "/works"
-    },
-    {
-      title: "Digital drips",
-      body: "Motion-led web pieces that feel like wet paint sliding under light.",
-      badge: "Motion",
-      image: "https://picsum.photos/seed/digitaldrips/400/250.jpg",
-      link: "/works"
-    },
-    {
-      title: "Pop-up energy",
-      body: "Installations and merch drops that pull crowds like fresh tags on dawn trains.",
-      badge: "Live",
-      image: "https://picsum.photos/seed/popupenergy/400/250.jpg",
-      link: "/works"
-    },
-  ];
+  const highlights = photos.slice(0, 3).map((photo) => ({
+    title: photo.caption || "Untitled",
+    body: photo.category,
+    badge: photo.category,
+    image: photo.url,
+    link: photo.link || photo.workId ? (photo.workId ? `/works/${photo.workId}` : "#") : "/works",
+  }));
 
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   

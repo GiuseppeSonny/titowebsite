@@ -1,18 +1,21 @@
 import styles from "./header.module.scss";
 
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useState } from "react";
 
 const Header = ({ theme = "dark", onToggleTheme }) => {
-  const { isAdmin, user } = useAuth();
+  const { isAdmin, user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const onAdminPage = location.pathname.startsWith("/admin");
   const [worksDropdown, setWorksDropdown] = useState(false);
 
   const menuList = [
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
     { name: "Contacts", path: "/contacts" },
+    { name: "Photos", path: "/photos" },
   ];
 
   const worksSubpages = [
@@ -80,10 +83,17 @@ const Header = ({ theme = "dark", onToggleTheme }) => {
               </NavLink>
             </li>
           )}
-          {user && (
+          {onAdminPage && user && (
             <li>
-              <button className={styles.backBtn} onClick={() => navigate(-1)}>
-                ← Back
+              <button className={styles.backBtn} onClick={() => navigate("/")}>
+                ← Site
+              </button>
+            </li>
+          )}
+          {onAdminPage && user && (
+            <li>
+              <button className={styles.logoutBtn} onClick={logout}>
+                Sign out
               </button>
             </li>
           )}
