@@ -268,7 +268,7 @@
 .devLink {
   padding: 8px 14px;
   border-radius: 999px;
-  color: #555;
+  color: rgba(255, 255, 255, 0.7);
   font-weight: 500;
   font-size: 0.85rem;
   font-family: "Playfair Display", "Georgia", serif;
@@ -278,8 +278,9 @@
   background: rgba(255, 255, 255, 0.03);
 
   &:hover {
-    color: #888;
-    border-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.08);
   }
 }
 

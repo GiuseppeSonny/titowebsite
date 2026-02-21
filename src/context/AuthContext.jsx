@@ -14,13 +14,19 @@ export const AuthProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       setUser(firebaseUser);
       if (firebaseUser) {
-        try {
-          const adminRef = doc(db, "admins", firebaseUser.uid);
-          const adminSnap = await getDoc(adminRef);
-          setIsAdmin(adminSnap.exists());
-        } catch (err) {
-          console.error("Error checking admin status:", err);
-          setIsAdmin(false);
+        const email = (firebaseUser.email || "").toLowerCase();
+        const envAdmin = (import.meta.env.VITE_ADMIN_EMAIL || "").toLowerCase();
+        if (envAdmin && email === envAdmin) {
+          setIsAdmin(true);
+        } else {
+          try {
+            const adminRef = doc(db, "admins", firebaseUser.uid);
+            const adminSnap = await getDoc(adminRef);
+            setIsAdmin(adminSnap.exists());
+          } catch (err) {
+            console.error("Error checking admin status:", err);
+            setIsAdmin(false);
+          }
         }
       } else {
         setIsAdmin(false);
