@@ -1,20 +1,10 @@
 import React from "react";
 import styles from "./works.module.scss";
-
-const internalProjects = [
-  {
-    title: "Studio Walls",
-    desc: "Experimental murals inside the atelier—tests for textures, tapes, and custom caps.",
-    tags: ["In-house", "Prototypes", "Textures"],
-  },
-  {
-    title: "Light Tests",
-    desc: "UV and projection blends mapped over stencil layers to refine night reveals.",
-    tags: ["UV", "Projection", "R&D"],
-  },
-];
+import { useData } from "../../context/DataContext";
 
 const InternalWorks = () => {
+  const { works } = useData();
+  const internalProjects = works.filter((w) => w.category === "internal");
   return (
     <div className={styles.main}>
       <div className={styles.headerRow}>

@@ -1,32 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./works.module.scss";
-
-const projects = [
-  {
-    title: "Neon Pulse",
-    desc: "6-meter mural under the ring road — chrome letters pulsing with UV ink and hidden blacklight poetry.",
-    tags: ["UV Ink", "Chrome", "Lettering"],
-    link: "#",
-    image: "https://picsum.photos/seed/neonpulse/400/300.jpg",
-  },
-  {
-    title: "Ghost Lines",
-    desc: "Projection-mapped trains painted in motion; layers of aerosol, light, and glitchy typographic loops.",
-    tags: ["Projection", "Motion", "Graffiti"],
-    link: "#",
-    image: "https://picsum.photos/seed/ghostlines/400/300.jpg",
-  },
-  {
-    title: "Concrete Bloom",
-    desc: "Abandoned warehouse takeover with fluorescent flora, cut vinyl stickers, and a breathing soundbed.",
-    tags: ["Fluoro", "Stickers", "Sound"],
-    link: "#",
-    image: "https://picsum.photos/seed/concretebloom/400/300.jpg",
-  },
-];
+import { useData } from "../../context/DataContext";
 
 const Works = () => {
+  const { works } = useData();
+  const projects = works.filter((w) => w.category === "recent" || !w.category);
   const [open, setOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(0);

@@ -1,20 +1,10 @@
 import React from "react";
 import styles from "./works.module.scss";
-
-const externalProjects = [
-  {
-    title: "Canal Facade",
-    desc: "Commissioned multi-story stencil with red accents along the river walkway.",
-    tags: ["Client", "Stencil", "Large scale"],
-  },
-  {
-    title: "Market Shutters",
-    desc: "Series of rolling shutters painted after hours—bold letters and character studies.",
-    tags: ["Shutters", "Letters", "Characters"],
-  },
-];
+import { useData } from "../../context/DataContext";
 
 const ExternalWorks = () => {
+  const { works } = useData();
+  const externalProjects = works.filter((w) => w.category === "external");
   return (
     <div className={styles.main}>
       <div className={styles.headerRow}>

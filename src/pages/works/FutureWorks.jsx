@@ -1,20 +1,10 @@
 import React from "react";
 import styles from "./works.module.scss";
-
-const futureProjects = [
-  {
-    title: "Subway Bloom",
-    desc: "Upcoming equinox drop—floral silhouettes over steel, revealed under motion-triggered light.",
-    tags: ["Upcoming", "Floral", "Light"],
-  },
-  {
-    title: "Skybridge",
-    desc: "Concept for a suspended banner stencil spanning two rooftops; wind-reactive layers.",
-    tags: ["Concept", "Large format", "Kinetic"],
-  },
-];
+import { useData } from "../../context/DataContext";
 
 const FutureWorks = () => {
+  const { works } = useData();
+  const futureProjects = works.filter((w) => w.category === "future");
   return (
     <div className={styles.main}>
       <div className={styles.headerRow}>

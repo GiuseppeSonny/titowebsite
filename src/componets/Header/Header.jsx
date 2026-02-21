@@ -1,8 +1,12 @@
 import styles from "./header.module.scss";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const Header = ({ theme = "dark", onToggleTheme }) => {
+  const { isAdmin, user } = useAuth();
+  const navigate = useNavigate();
+
   const menuList = [
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
@@ -30,6 +34,23 @@ const Header = ({ theme = "dark", onToggleTheme }) => {
               </NavLink>{" "}
             </li>
           ))}
+          {isAdmin && (
+            <li>
+              <button className={styles.adminBtn} onClick={() => navigate("/admin")}>
+                ⚡ Admin
+              </button>
+            </li>
+          )}
+          {!user && (
+            <li>
+              <NavLink
+                to="/admin"
+                className={({ isActive }) => (isActive ? styles.active : styles.devLink)}
+              >
+                Dev
+              </NavLink>
+            </li>
+          )}
         </ul>
       </div>
     </nav>

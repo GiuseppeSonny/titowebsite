@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import Header from "./componets/Header/Header";
 import Footer from "./componets/Header/footer/Footer";
@@ -11,6 +11,34 @@ import ExternalWorks from "./pages/works/ExternalWorks";
 import FutureWorks from "./pages/works/FutureWorks";
 import OldWorks from "./pages/works/OldWorks";
 import Home from "./pages/home/Home";
+import AdminPage from "./admin/AdminPage";
+import { AuthProvider } from "./context/AuthContext";
+import { DataProvider } from "./context/DataContext";
+
+const AppLayout = ({ theme, toggleTheme }) => {
+  const location = useLocation();
+  const isAdmin = location.pathname.startsWith("/admin");
+
+  return (
+    <div className={`App ${theme === "light" ? "theme-light" : "theme-dark"}`}>
+      {!isAdmin && <Header theme={theme} onToggleTheme={toggleTheme} />}
+      <div className={isAdmin ? "" : "routes"}>
+        <Routes>
+          <Route path="/" exact element={<Home />} />
+          <Route path="/about" exact element={<About />} />
+          <Route path="/contacts" element={<Contacts />} />
+          <Route path="/works" element={<Works />} />
+          <Route path="/works/internal" element={<InternalWorks />} />
+          <Route path="/works/external" element={<ExternalWorks />} />
+          <Route path="/works/future" element={<FutureWorks />} />
+          <Route path="/works/old" element={<OldWorks />} />
+          <Route path="/admin" element={<AdminPage />} />
+        </Routes>
+      </div>
+      {!isAdmin && <Footer />}
+    </div>
+  );
+};
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -18,22 +46,11 @@ function App() {
 
   return (
     <Router>
-      <div className={`App ${theme === "light" ? "theme-light" : "theme-dark"}`}>
-        <Header theme={theme} onToggleTheme={toggleTheme} />
-        <div className="routes">
-          <Routes>
-            <Route path="/" exact element={<Home />} />
-            <Route path="/about" exact element={<About />} />
-            <Route path="/contacts" element={<Contacts />} />
-            <Route path="/works" element={<Works />} />
-            <Route path="/works/internal" element={<InternalWorks />} />
-            <Route path="/works/external" element={<ExternalWorks />} />
-            <Route path="/works/future" element={<FutureWorks />} />
-            <Route path="/works/old" element={<OldWorks />} />
-          </Routes>
-        </div>
-        <Footer />
-      </div>
+      <AuthProvider>
+        <DataProvider>
+          <AppLayout theme={theme} toggleTheme={toggleTheme} />
+        </DataProvider>
+      </AuthProvider>
     </Router>
   );
 }

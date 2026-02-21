@@ -1,0 +1,854 @@
+// ─── Dashboard Layout ───────────────────────────────────────────────────────
+
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+  background: #0f0f0f;
+  color: #e8e8e8;
+  font-family: inherit;
+}
+
+.sidebar {
+  width: 220px;
+  min-width: 220px;
+  background: #161616;
+  border-right: 1px solid #2a2a2a;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebarBrand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 24px 20px 20px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #2a2a2a;
+  color: #fff;
+
+  span:first-child {
+    font-size: 1.4rem;
+  }
+}
+
+.sidebarNav {
+  flex: 1;
+  padding: 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 20px;
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  border-radius: 0;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover {
+    background: #1e1e1e;
+    color: #fff;
+  }
+}
+
+.navActive {
+  background: #1e1e1e;
+  color: #fff;
+  border-left: 3px solid #ff4444;
+}
+
+.navIcon {
+  font-size: 1rem;
+  width: 20px;
+  text-align: center;
+}
+
+.sidebarUser {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px;
+  border-top: 1px solid #2a2a2a;
+  background: #111;
+}
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.userInfo {
+  flex: 1;
+  overflow: hidden;
+
+  strong {
+    display: block;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #fff;
+  }
+
+  small {
+    font-size: 0.7rem;
+    color: #666;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+  }
+}
+
+.logoutBtn {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.15s;
+
+  &:hover {
+    color: #ff4444;
+  }
+}
+
+.dashboardMain {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 100vh;
+}
+
+.dashboardContent {
+  padding: 32px;
+  max-width: 1100px;
+}
+
+// ─── Overview ───────────────────────────────────────────────────────────────
+
+.overview {
+  h2 {
+    font-size: 1.6rem;
+    margin-bottom: 24px;
+    color: #fff;
+  }
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 36px;
+}
+
+.statCard {
+  background: #161616;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  .statIcon {
+    font-size: 1.8rem;
+  }
+
+  strong {
+    display: block;
+    font-size: 1.8rem;
+    color: #fff;
+    line-height: 1;
+  }
+
+  p {
+    font-size: 0.8rem;
+    color: #888;
+    margin: 4px 0 0;
+  }
+}
+
+.quickActions {
+  h3 {
+    font-size: 1rem;
+    color: #aaa;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+}
+
+.quickGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.quickBtn {
+  background: #161616;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 18px 16px;
+  color: #ccc;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+
+  span:first-child {
+    font-size: 1.6rem;
+  }
+
+  &:hover {
+    background: #1e1e1e;
+    border-color: #ff4444;
+    color: #fff;
+  }
+}
+
+// ─── Manager Sections ────────────────────────────────────────────────────────
+
+.managerSection {
+  h2 {
+    font-size: 1.5rem;
+    color: #fff;
+  }
+}
+
+.managerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.addBtn {
+  background: #ff4444;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover {
+    background: #e03333;
+  }
+}
+
+// ─── Filter Row ──────────────────────────────────────────────────────────────
+
+.filterRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.filterBtn {
+  background: #1e1e1e;
+  border: 1px solid #2a2a2a;
+  color: #888;
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  text-transform: capitalize;
+  transition: all 0.15s;
+
+  &:hover {
+    border-color: #555;
+    color: #ccc;
+  }
+
+  &.active {
+    background: #ff4444;
+    border-color: #ff4444;
+    color: #fff;
+  }
+}
+
+// ─── Form ────────────────────────────────────────────────────────────────────
+
+.form {
+  background: #161616;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 24px;
+  margin-bottom: 24px;
+
+  h3 {
+    font-size: 1rem;
+    color: #fff;
+    margin-bottom: 16px;
+  }
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 16px;
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  input,
+  textarea,
+  select {
+    background: #0f0f0f;
+    border: 1px solid #2a2a2a;
+    border-radius: 6px;
+    color: #e8e8e8;
+    padding: 9px 12px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s;
+
+    &:focus {
+      border-color: #ff4444;
+    }
+
+    &::placeholder {
+      color: #444;
+    }
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  select option {
+    background: #161616;
+  }
+}
+
+.fullWidth {
+  grid-column: 1 / -1;
+}
+
+.imagePreview {
+  margin-bottom: 16px;
+
+  img {
+    max-width: 200px;
+    max-height: 140px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #2a2a2a;
+  }
+}
+
+.formActions {
+  display: flex;
+  gap: 10px;
+}
+
+.saveBtn {
+  background: #ff4444;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 9px 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover:not(:disabled) {
+    background: #e03333;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.cancelBtn {
+  background: #1e1e1e;
+  color: #aaa;
+  border: 1px solid #2a2a2a;
+  border-radius: 6px;
+  padding: 9px 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover {
+    border-color: #555;
+    color: #fff;
+  }
+}
+
+// ─── Items List ──────────────────────────────────────────────────────────────
+
+.itemsList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.itemCard {
+  background: #161616;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: border-color 0.15s;
+
+  &:hover {
+    border-color: #3a3a3a;
+  }
+}
+
+.itemThumb {
+  width: 64px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 5px;
+  flex-shrink: 0;
+}
+
+.itemInfo {
+  flex: 1;
+  overflow: hidden;
+
+  strong {
+    display: block;
+    color: #fff;
+    font-size: 0.95rem;
+    margin-bottom: 2px;
+  }
+
+  p {
+    font-size: 0.8rem;
+    color: #777;
+    margin: 0 0 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+
+  span {
+    background: #222;
+    border: 1px solid #333;
+    color: #aaa;
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+}
+
+.catBadge {
+  display: inline-block;
+  background: #1e1e1e;
+  border: 1px solid #333;
+  color: #aaa;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  text-transform: capitalize;
+  margin-bottom: 4px;
+}
+
+.typeBadge {
+  display: inline-block;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  text-transform: capitalize;
+  margin-top: 4px;
+
+  &.exhibition { background: #1a3a5c; color: #6ab0ff; }
+  &.workshop   { background: #1a3a1a; color: #6aff6a; }
+  &.battle     { background: #3a1a1a; color: #ff6a6a; }
+  &.projection { background: #2a1a3a; color: #c06aff; }
+  &.festival   { background: #3a2a1a; color: #ffb06a; }
+  &.other      { background: #2a2a2a; color: #aaa; }
+}
+
+.itemActions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.editBtn {
+  background: #1e1e1e;
+  border: 1px solid #333;
+  color: #aaa;
+  border-radius: 5px;
+  padding: 5px 12px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover {
+    border-color: #ff4444;
+    color: #ff4444;
+  }
+}
+
+.deleteBtn {
+  background: none;
+  border: 1px solid #333;
+  color: #666;
+  border-radius: 5px;
+  padding: 5px 12px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover {
+    background: #3a1a1a;
+    border-color: #ff4444;
+    color: #ff4444;
+  }
+}
+
+.empty {
+  color: #555;
+  font-size: 0.9rem;
+  padding: 20px 0;
+  text-align: center;
+}
+
+// ─── Events ──────────────────────────────────────────────────────────────────
+
+.eventDateBlock {
+  width: 48px;
+  min-width: 48px;
+  height: 52px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #1e1e1e;
+  border: 1px solid #2a2a2a;
+
+  &.exhibition { background: #1a3a5c; }
+  &.workshop   { background: #1a3a1a; }
+  &.battle     { background: #3a1a1a; }
+  &.projection { background: #2a1a3a; }
+  &.festival   { background: #3a2a1a; }
+}
+
+.eventDayNum {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+
+.eventMonthStr {
+  font-size: 0.65rem;
+  color: #aaa;
+  text-transform: uppercase;
+}
+
+// ─── Photos Grid ─────────────────────────────────────────────────────────────
+
+.photoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.photoCard {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  background: #161616;
+  border: 1px solid #2a2a2a;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.2s;
+  }
+
+  &:hover img {
+    transform: scale(1.04);
+  }
+
+  &:hover .photoOverlay {
+    opacity: 1;
+  }
+}
+
+.photoOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 12px;
+  opacity: 0;
+  transition: opacity 0.2s;
+
+  p {
+    font-size: 0.8rem;
+    color: #ddd;
+    margin: 0 0 4px;
+  }
+}
+
+.photoActions {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+// ─── Stats Section ───────────────────────────────────────────────────────────
+
+.statsSection {
+  margin: 16px 0;
+}
+
+.statsSectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  h4 {
+    font-size: 0.85rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0;
+  }
+}
+
+.statRow {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+  align-items: center;
+
+  input {
+    flex: 1;
+    background: #0f0f0f;
+    border: 1px solid #2a2a2a;
+    border-radius: 6px;
+    color: #e8e8e8;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    outline: none;
+
+    &:focus {
+      border-color: #ff4444;
+    }
+
+    &::placeholder {
+      color: #444;
+    }
+  }
+}
+
+// ─── Login Page ──────────────────────────────────────────────────────────────
+
+.loginPage {
+  min-height: 100vh;
+  background: #0f0f0f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.loginCard {
+  background: #161616;
+  border: 1px solid #2a2a2a;
+  border-radius: 16px;
+  padding: 48px 40px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+
+  h1 {
+    color: #fff;
+    font-size: 1.8rem;
+    margin: 16px 0 8px;
+  }
+
+  p {
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+}
+
+.loginLogo {
+  font-size: 2.5rem;
+  margin-bottom: 4px;
+}
+
+.googleBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  background: #fff;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, box-shadow 0.15s;
+
+  &:hover:not(:disabled) {
+    background: #f5f5f5;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+.errorMsg {
+  background: #3a1a1a;
+  border: 1px solid #ff4444;
+  color: #ff8888;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+// ─── Admin Floating Button (in header) ───────────────────────────────────────
+
+.adminFloatBtn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #ff4444;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(255, 68, 68, 0.4);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.15s, transform 0.15s;
+
+  &:hover {
+    background: #e03333;
+    transform: translateY(-2px);
+  }
+}
+
+// ─── Responsive ──────────────────────────────────────────────────────────────
+
+@media (max-width: 768px) {
+  .dashboard {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    min-width: unset;
+    height: auto;
+    position: static;
+    border-right: none;
+    border-bottom: 1px solid #2a2a2a;
+  }
+
+  .sidebarNav {
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 8px 12px;
+    gap: 4px;
+  }
+
+  .navItem {
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 12px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    border-left: none;
+    border-bottom: 3px solid transparent;
+  }
+
+  .navActive {
+    border-left: none;
+    border-bottom: 3px solid #ff4444;
+  }
+
+  .sidebarUser {
+    display: none;
+  }
+
+  .dashboardContent {
+    padding: 20px 16px;
+  }
+
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .statsGrid,
+  .quickGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

@@ -1,12 +1,19 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./home.module.scss";
+import { useData } from "../../context/DataContext";
 
 const Home = () => {
   const navigate = useNavigate();
+  const { events: rawEvents } = useData();
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-  
+
+  const upcomingEvents = rawEvents.map((e) => ({
+    ...e,
+    date: e.date instanceof Date ? e.date : new Date(e.date + "T12:00:00"),
+  }));
+
   const highlights = [
     {
       title: "Walls into stories",
@@ -29,39 +36,6 @@ const Home = () => {
       image: "https://picsum.photos/seed/popupenergy/400/250.jpg",
       link: "/works"
     },
-  ];
-
-  const upcomingEvents = [
-    {
-      date: new Date(2025, 2, 15), // March 15, 2025
-      title: "Subway Bloom Opening",
-      location: "Brooklyn Station",
-      type: "exhibition"
-    },
-    {
-      date: new Date(2025, 2, 22), // March 22, 2025
-      title: "Neon Workshop",
-      location: "Manhattan Arts Center",
-      type: "workshop"
-    },
-    {
-      date: new Date(2025, 3, 5), // April 5, 2025
-      title: "Graffiti Battle",
-      location: "Queens Warehouse",
-      type: "battle"
-    },
-    {
-      date: new Date(2025, 3, 18), // April 18, 2025
-      title: "Projection Mapping Night",
-      location: "Bronx Gallery",
-      type: "projection"
-    },
-    {
-      date: new Date(2025, 4, 10), // May 10, 2025
-      title: "Street Art Festival",
-      location: "Central Park",
-      type: "festival"
-    }
   ];
 
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];

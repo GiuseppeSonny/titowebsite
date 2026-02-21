@@ -245,6 +245,44 @@
   box-shadow: 0 4px 16px rgba(230, 57, 70, 0.38), 0 0 0 1px rgba(255, 255, 255, 0.12);
 }
 
+.adminBtn {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(230, 57, 70, 0.5);
+  background: rgba(230, 57, 70, 0.15);
+  color: #ff6b6b;
+  font-weight: 700;
+  font-size: 0.8rem;
+  font-family: "Playfair Display", "Georgia", serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(230, 57, 70, 0.3);
+    border-color: rgba(230, 57, 70, 0.8);
+    color: #fff;
+    transform: translateY(-1px);
+  }
+}
+
+.devLink {
+  padding: 8px 14px;
+  border-radius: 999px;
+  color: #555;
+  font-weight: 500;
+  font-size: 0.85rem;
+  font-family: "Playfair Display", "Georgia", serif;
+  font-style: italic;
+  transition: all 0.25s ease;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.03);
+
+  &:hover {
+    color: #888;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
 @media (max-width: 720px) {
   .navbarContainer {
     flex-direction: column;
