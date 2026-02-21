@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
-import { auth, googleProvider } from "../firebase/firebase";
+import { doc, getDoc } from "firebase/firestore";
+import { auth, googleProvider, db } from "../firebase/firebase";
 
 const AuthContext = createContext(null);
 
@@ -10,10 +11,20 @@ export const AuthProvider = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       setUser(firebaseUser);
-      const adminEmail = import.meta.env.VITE_ADMIN_EMAIL;
-      setIsAdmin(!!firebaseUser && firebaseUser.email === adminEmail);
+      if (firebaseUser) {
+        try {
+          const adminRef = doc(db, "admins", firebaseUser.uid);
+          const adminSnap = await getDoc(adminRef);
+          setIsAdmin(adminSnap.exists());
+        } catch (err) {
+          console.error("Error checking admin status:", err);
+          setIsAdmin(false);
+        }
+      } else {
+        setIsAdmin(false);
+      }
       setLoading(false);
     });
     return unsubscribe;

@@ -7,6 +7,7 @@ import EventsManager from "./EventsManager";
 import PhotosManager from "./PhotosManager";
 import AboutManager from "./AboutManager";
 import ContactsManager from "./ContactsManager";
+import AdminsManager from "./AdminsManager";
 import styles from "./admin.module.scss";
 
 const TABS = [
@@ -16,6 +17,7 @@ const TABS = [
   { id: "events", label: "Events", icon: "📅" },
   { id: "about", label: "About", icon: "👤" },
   { id: "contacts", label: "Contacts", icon: "✉" },
+  { id: "admins", label: "Admins", icon: "🔐" },
 ];
 
 const AdminDashboard = () => {
@@ -36,6 +38,7 @@ const AdminDashboard = () => {
       case "events": return <EventsManager />;
       case "about": return <AboutManager />;
       case "contacts": return <ContactsManager />;
+      case "admins": return <AdminsManager />;
       default: return (
         <div className={styles.overview}>
           <h2>Dashboard Overview</h2>
