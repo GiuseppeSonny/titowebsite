@@ -220,7 +220,6 @@ export const DataProvider = ({ children }) => {
       } else {
         await addDoc(collection(db, "about"), data);
       }
-      setAbout((prev) => ({ ...prev, ...data }));
     } catch (err) {
       console.error("updateAbout failed", err);
       throw err;
@@ -235,7 +234,6 @@ export const DataProvider = ({ children }) => {
       } else {
         await addDoc(collection(db, "contacts"), data);
       }
-      setContacts((prev) => ({ ...prev, ...data }));
     } catch (err) {
       console.error("updateContacts failed", err);
       throw err;
