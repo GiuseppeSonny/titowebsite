@@ -12,12 +12,14 @@ const EventsManager = () => {
   const [editingId, setEditingId] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError("");
     try {
       if (editingId) {
         await updateEvent(editingId, form);
@@ -29,8 +31,10 @@ const EventsManager = () => {
       setShowForm(false);
     } catch (err) {
       console.error(err);
+      setError(err?.message || "Save failed");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const handleEdit = (event) => {
@@ -64,6 +68,7 @@ const EventsManager = () => {
       {showForm && (
         <form className={styles.form} onSubmit={handleSubmit}>
           <h3>{editingId ? "Edit Event" : "New Event"}</h3>
+          {error && <div className={styles.errorMsg}>{error}</div>}
           <div className={styles.formGrid}>
             <label>
               Title

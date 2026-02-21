@@ -7,6 +7,7 @@ const ContactsManager = () => {
   const [form, setForm] = useState({ email: "", phone: "", location: "", instagram: "", twitter: "" });
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     setForm({
@@ -23,14 +24,17 @@ const ContactsManager = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError("");
     try {
       await updateContacts(form);
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
     } catch (err) {
       console.error(err);
+      setError(err?.message || "Save failed");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -40,6 +44,7 @@ const ContactsManager = () => {
       </div>
 
       <form className={styles.form} onSubmit={handleSubmit}>
+        {error && <div className={styles.errorMsg}>{error}</div>}
         <div className={styles.formGrid}>
           <label>
             Email

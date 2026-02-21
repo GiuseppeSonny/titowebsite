@@ -7,6 +7,7 @@ const AboutManager = () => {
   const [form, setForm] = useState({ title: "", bio: "", skills: "", stats: [] });
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     setForm({
@@ -33,6 +34,7 @@ const AboutManager = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError("");
     try {
       await updateAbout({
         ...form,
@@ -42,8 +44,10 @@ const AboutManager = () => {
       setTimeout(() => setSaved(false), 2000);
     } catch (err) {
       console.error(err);
+      setError(err?.message || "Save failed");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -53,6 +57,7 @@ const AboutManager = () => {
       </div>
 
       <form className={styles.form} onSubmit={handleSubmit}>
+        {error && <div className={styles.errorMsg}>{error}</div>}
         <div className={styles.formGrid}>
           <label className={styles.fullWidth}>
             Artist / Studio Name

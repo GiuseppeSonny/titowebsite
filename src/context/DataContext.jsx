@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import {
   collection,
-  getDocs,
   addDoc,
   updateDoc,
   deleteDoc,
@@ -60,30 +59,63 @@ export const DataProvider = ({ children }) => {
   const [about, setAbout] = useState(defaultAbout);
   const [contacts, setContacts] = useState(defaultContacts);
   const [firestoreReady, setFirestoreReady] = useState(false);
+  const [ready, setReady] = useState({ works: false, events: false, photos: false, about: false, contacts: false });
 
   useEffect(() => {
-    const unsubWorks = onSnapshot(collection(db, "works"), (snap) => {
-      if (!snap.empty) {
+    const unsubWorks = onSnapshot(
+      collection(db, "works"),
+      (snap) => {
         setWorks(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
-      }
-      setFirestoreReady(true);
-    }, () => setFirestoreReady(false));
+        setReady((r) => ({ ...r, works: true }));
+      },
+      () => setReady((r) => ({ ...r, works: false }))
+    );
 
-    const unsubEvents = onSnapshot(collection(db, "events"), (snap) => {
-      if (!snap.empty) setEvents(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
-    }, () => {});
+    const unsubEvents = onSnapshot(
+      collection(db, "events"),
+      (snap) => {
+        setEvents(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+        setReady((r) => ({ ...r, events: true }));
+      },
+      () => setReady((r) => ({ ...r, events: false }))
+    );
 
-    const unsubPhotos = onSnapshot(collection(db, "photos"), (snap) => {
-      if (!snap.empty) setPhotos(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
-    }, () => {});
+    const unsubPhotos = onSnapshot(
+      collection(db, "photos"),
+      (snap) => {
+        setPhotos(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+        setReady((r) => ({ ...r, photos: true }));
+      },
+      () => setReady((r) => ({ ...r, photos: false }))
+    );
 
-    const unsubAbout = onSnapshot(collection(db, "about"), (snap) => {
-      if (!snap.empty) setAbout({ id: snap.docs[0].id, ...snap.docs[0].data() });
-    }, () => {});
+    const unsubAbout = onSnapshot(
+      collection(db, "about"),
+      (snap) => {
+        if (snap.empty) {
+          setAbout(defaultAbout);
+        } else {
+          setAbout({ id: snap.docs[0].id, ...snap.docs[0].data() });
+        }
+        setReady((r) => ({ ...r, about: true }));
+      },
+      () => setReady((r) => ({ ...r, about: false }))
+    );
 
-    const unsubContacts = onSnapshot(collection(db, "contacts"), (snap) => {
-      if (!snap.empty) setContacts({ id: snap.docs[0].id, ...snap.docs[0].data() });
-    }, () => {});
+    const unsubContacts = onSnapshot(
+      collection(db, "contacts"),
+      (snap) => {
+        if (snap.empty) {
+          setContacts(defaultContacts);
+        } else {
+          setContacts({ id: snap.docs[0].id, ...snap.docs[0].data() });
+        }
+        setReady((r) => ({ ...r, contacts: true }));
+      },
+      () => setReady((r) => ({ ...r, contacts: false }))
+    );
+
+    setFirestoreReady(true);
 
     return () => {
       unsubWorks();
@@ -94,60 +126,120 @@ export const DataProvider = ({ children }) => {
     };
   }, []);
 
+  useEffect(() => {
+    const allReady = Object.values(ready).every(Boolean);
+    setFirestoreReady(allReady);
+  }, [ready]);
+
   // Works CRUD
   const addWork = async (work) => {
-    const docRef = await addDoc(collection(db, "works"), { ...work, createdAt: serverTimestamp() });
-    return docRef.id;
+    try {
+      const docRef = await addDoc(collection(db, "works"), { ...work, createdAt: serverTimestamp() });
+      return docRef.id;
+    } catch (err) {
+      console.error("addWork failed", err);
+      throw err;
+    }
   };
   const updateWork = async (id, data) => {
-    await updateDoc(doc(db, "works", id), data);
+    try {
+      await updateDoc(doc(db, "works", id), data);
+    } catch (err) {
+      console.error("updateWork failed", err);
+      throw err;
+    }
   };
   const deleteWork = async (id) => {
-    await deleteDoc(doc(db, "works", id));
+    try {
+      await deleteDoc(doc(db, "works", id));
+    } catch (err) {
+      console.error("deleteWork failed", err);
+      throw err;
+    }
   };
 
   // Events CRUD
   const addEvent = async (event) => {
-    const docRef = await addDoc(collection(db, "events"), { ...event, createdAt: serverTimestamp() });
-    return docRef.id;
+    try {
+      const docRef = await addDoc(collection(db, "events"), { ...event, createdAt: serverTimestamp() });
+      return docRef.id;
+    } catch (err) {
+      console.error("addEvent failed", err);
+      throw err;
+    }
   };
   const updateEvent = async (id, data) => {
-    await updateDoc(doc(db, "events", id), data);
+    try {
+      await updateDoc(doc(db, "events", id), data);
+    } catch (err) {
+      console.error("updateEvent failed", err);
+      throw err;
+    }
   };
   const deleteEvent = async (id) => {
-    await deleteDoc(doc(db, "events", id));
+    try {
+      await deleteDoc(doc(db, "events", id));
+    } catch (err) {
+      console.error("deleteEvent failed", err);
+      throw err;
+    }
   };
 
   // Photos CRUD
   const addPhoto = async (photo) => {
-    const docRef = await addDoc(collection(db, "photos"), { ...photo, createdAt: serverTimestamp() });
-    return docRef.id;
+    try {
+      const docRef = await addDoc(collection(db, "photos"), { ...photo, createdAt: serverTimestamp() });
+      return docRef.id;
+    } catch (err) {
+      console.error("addPhoto failed", err);
+      throw err;
+    }
   };
   const updatePhoto = async (id, data) => {
-    await updateDoc(doc(db, "photos", id), data);
+    try {
+      await updateDoc(doc(db, "photos", id), data);
+    } catch (err) {
+      console.error("updatePhoto failed", err);
+      throw err;
+    }
   };
   const deletePhoto = async (id) => {
-    await deleteDoc(doc(db, "photos", id));
+    try {
+      await deleteDoc(doc(db, "photos", id));
+    } catch (err) {
+      console.error("deletePhoto failed", err);
+      throw err;
+    }
   };
 
   // About update
   const updateAbout = async (data) => {
-    if (about.id) {
-      await updateDoc(doc(db, "about", about.id), data);
-    } else {
-      await addDoc(collection(db, "about"), data);
+    try {
+      if (about.id) {
+        await updateDoc(doc(db, "about", about.id), data);
+      } else {
+        await addDoc(collection(db, "about"), data);
+      }
+      setAbout((prev) => ({ ...prev, ...data }));
+    } catch (err) {
+      console.error("updateAbout failed", err);
+      throw err;
     }
-    setAbout((prev) => ({ ...prev, ...data }));
   };
 
   // Contacts update
   const updateContacts = async (data) => {
-    if (contacts.id) {
-      await updateDoc(doc(db, "contacts", contacts.id), data);
-    } else {
-      await addDoc(collection(db, "contacts"), data);
+    try {
+      if (contacts.id) {
+        await updateDoc(doc(db, "contacts", contacts.id), data);
+      } else {
+        await addDoc(collection(db, "contacts"), data);
+      }
+      setContacts((prev) => ({ ...prev, ...data }));
+    } catch (err) {
+      console.error("updateContacts failed", err);
+      throw err;
     }
-    setContacts((prev) => ({ ...prev, ...data }));
   };
 
   return (

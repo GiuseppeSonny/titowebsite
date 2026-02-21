@@ -12,6 +12,7 @@ const PhotosManager = () => {
   const [editingId, setEditingId] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [filterCat, setFilterCat] = useState("all");
 
   const handleChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
@@ -19,6 +20,7 @@ const PhotosManager = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError("");
     try {
       if (editingId) {
         await updatePhoto(editingId, form);
@@ -30,8 +32,10 @@ const PhotosManager = () => {
       setShowForm(false);
     } catch (err) {
       console.error(err);
+      setError(err?.message || "Save failed");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const handleEdit = (photo) => {
@@ -77,6 +81,7 @@ const PhotosManager = () => {
       {showForm && (
         <form className={styles.form} onSubmit={handleSubmit}>
           <h3>{editingId ? "Edit Photo" : "Add Photo"}</h3>
+          {error && <div className={styles.errorMsg}>{error}</div>}
           <div className={styles.formGrid}>
             <label className={styles.fullWidth}>
               Image URL

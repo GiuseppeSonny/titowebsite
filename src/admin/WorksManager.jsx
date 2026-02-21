@@ -12,6 +12,7 @@ const WorksManager = () => {
   const [editingId, setEditingId] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [filterCat, setFilterCat] = useState("all");
 
   const handleChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
@@ -19,6 +20,7 @@ const WorksManager = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError("");
     const payload = {
       ...form,
       tags: typeof form.tags === "string" ? form.tags.split(",").map((t) => t.trim()).filter(Boolean) : form.tags,
@@ -34,8 +36,10 @@ const WorksManager = () => {
       setShowForm(false);
     } catch (err) {
       console.error(err);
+      setError(err?.message || "Save failed");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const handleEdit = (work) => {
@@ -81,6 +85,7 @@ const WorksManager = () => {
       {showForm && (
         <form className={styles.form} onSubmit={handleSubmit}>
           <h3>{editingId ? "Edit Work" : "New Work"}</h3>
+          {error && <div className={styles.errorMsg}>{error}</div>}
           <div className={styles.formGrid}>
             <label>
               Title
