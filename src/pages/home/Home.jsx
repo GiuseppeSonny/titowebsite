@@ -5,7 +5,7 @@ import { useData } from "../../context/DataContext";
 
 const Home = () => {
   const navigate = useNavigate();
-  const { events: rawEvents, photos } = useData();
+  const { events: rawEvents, photos, works } = useData();
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
@@ -14,13 +14,26 @@ const Home = () => {
     date: e.date instanceof Date ? e.date : new Date(e.date + "T12:00:00"),
   }));
 
-  const highlights = photos.slice(0, 3).map((photo) => ({
-    title: photo.caption || "Untitled",
-    body: photo.category,
-    badge: photo.category,
-    image: photo.url,
-    link: photo.link || photo.workId ? (photo.workId ? `/works/${photo.workId}` : "#") : "/works",
-  }));
+  const highlights = photos.slice(0, 3).map((photo) => {
+    let link = "/photos";
+    if (photo.workId) {
+      const work = works.find((w) => w.id === photo.workId);
+      if (work && work.category && work.category !== "recent") {
+        link = `/works/${work.category}`;
+      } else {
+        link = "/works";
+      }
+    } else if (photo.link) {
+      link = photo.link;
+    }
+    return {
+      title: photo.caption || "Untitled",
+      body: photo.category,
+      badge: photo.category,
+      image: photo.url,
+      link,
+    };
+  });
 
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   

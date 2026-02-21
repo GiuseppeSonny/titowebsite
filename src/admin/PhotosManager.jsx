@@ -9,7 +9,7 @@ const PHOTO_CATEGORIES = ["murals", "uv", "installations", "external", "internal
 const emptyPhoto = { url: "", caption: "", category: "murals", link: "", workId: "" };
 
 const PhotosManager = () => {
-  const { photos, addPhoto, updatePhoto, deletePhoto } = useData();
+  const { photos, addPhoto, updatePhoto, deletePhoto, works } = useData();
   const [form, setForm] = useState(emptyPhoto);
   const [editingId, setEditingId] = useState(null);
   const [showForm, setShowForm] = useState(false);
@@ -180,8 +180,15 @@ const PhotosManager = () => {
               <input name="link" value={form.link} onChange={handleChange} placeholder="https://example.com" />
             </label>
             <label>
-              Link to Work ID (optional)
-              <input name="workId" value={form.workId} onChange={handleChange} placeholder="work-id-from-works-manager" />
+              Link to Work (optional)
+              <select name="workId" value={form.workId} onChange={handleChange}>
+                <option value="">None</option>
+                {works.map((work) => (
+                  <option key={work.id} value={work.id}>
+                    {work.title} ({work.category})
+                  </option>
+                ))}
+              </select>
             </label>
           </div>
           {(form.url || filePreview) && (

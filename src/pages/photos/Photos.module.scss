@@ -1,8 +1,44 @@
 .photos {
   min-height: 100vh;
-  background: #0a0a0a;
-  color: #f7f7f7;
+  background:
+    radial-gradient(ellipse at top left, rgba(255, 140, 0, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(255, 165, 0, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 20% 80%, rgba(255, 160, 0, 0.05) 0%, transparent 50%),
+    linear-gradient(135deg, #ffffff 0%, #fff9f5 40%, #fffef9 100%);
+  background-attachment: fixed;
+  color: #333;
   padding: 40px 20px;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 25% 25%, rgba(255, 140, 0, 0.03) 1px, transparent 1px),
+      radial-gradient(circle at 75% 75%, rgba(255, 165, 0, 0.025) 1px, transparent 1px);
+    background-size: 60px 60px, 90px 90px;
+    pointer-events: none;
+    opacity: 0.8;
+    z-index: 0;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(45deg, transparent 30%, rgba(255, 140, 0, 0.015) 50%, transparent 70%),
+      linear-gradient(-45deg, transparent 30%, rgba(255, 165, 0, 0.012) 50%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
 }
 
 .header {
@@ -45,15 +81,18 @@
 .thumb {
   aspect-ratio: 4/3;
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  background: #111;
+  transition: transform 0.4s ease, box-shadow 0.4s ease, filter 0.4s ease;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  filter: brightness(1) contrast(1.02);
 }
 
 .thumb:hover {
-  transform: scale(1.04);
-  box-shadow: 0 8px 24px rgba(230, 57, 70, 0.15);
+  transform: scale(1.04) translateY(-2px);
+  box-shadow: 0 12px 32px rgba(255, 140, 0, 0.2), 0 0 0 1px rgba(255, 140, 0, 0.1);
+  filter: brightness(1.05) contrast(1.06);
 }
 
 .thumb img {
@@ -67,98 +106,136 @@
 .carouselOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.92);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
   z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: fadeIn 0.2s ease;
+  animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: auto;
+  padding: 40px 0;
 }
 
 .carousel {
   position: relative;
-  max-width: 90vw;
-  max-height: 90vh;
+  width: 100%;
+  height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 100%;
 }
 
 .carouselImage {
+  position: relative;
   max-width: 90vw;
-  max-height: 90vh;
+  max-height: calc(100vh - 120px);
+  animation: slideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .carouselImage img {
-  width: 100%;
-  height: 100%;
+  max-width: 100%;
+  max-height: calc(100vh - 120px);
   object-fit: contain;
-  border-radius: 4px;
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(255, 140, 0, 0.2);
 }
 
 .close {
-  position: absolute;
-  top: -40px;
-  right: 0;
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 2rem;
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 140, 0, 0.2);
+  color: #ff8c00;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 1.4rem;
   cursor: pointer;
-  opacity: 0.8;
-  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 1001;
+  box-shadow: 0 4px 12px rgba(255, 140, 0, 0.1);
 }
 
 .close:hover {
-  opacity: 1;
+  background: #fff;
+  border-color: rgba(255, 140, 0, 0.4);
+  color: #ff6600;
+  transform: scale(1.08);
 }
 
 .navPrev,
 .navNext {
-  position: absolute;
+  position: fixed;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
-  font-size: 1.8rem;
-  width: 48px;
-  height: 48px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 140, 0, 0.2);
+  color: #ff8c00;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
+  font-size: 1.6rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s, border-color 0.2s;
+  transition: all 0.3s ease;
+  z-index: 1001;
+  box-shadow: 0 4px 12px rgba(255, 140, 0, 0.1);
 }
 
 .navPrev:hover,
 .navNext:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: #fff;
+  border-color: rgba(255, 140, 0, 0.4);
+  color: #ff6600;
+  transform: scale(1.1);
 }
 
 .navPrev {
-  left: -70px;
+  left: 24px;
 }
 
 .navNext {
-  right: -70px;
+  right: 24px;
 }
 
 .counter {
-  position: absolute;
-  bottom: -40px;
+  position: fixed;
+  bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
-  color: #fff;
-  font-size: 0.9rem;
-  opacity: 0.7;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 140, 0, 0.2);
+  color: #ff8c00;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  z-index: 1001;
+  box-shadow: 0 4px 12px rgba(255, 140, 0, 0.1);
 }
 
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 /* Mobile */
@@ -176,25 +253,44 @@
     gap: 10px;
   }
 
-  .carousel {
+  .carouselOverlay {
+    padding: 20px 0;
+  }
+
+  .carouselImage {
     max-width: 95vw;
-    max-height: 80vh;
+    max-height: calc(100vh - 100px);
+  }
+
+  .carouselImage img {
+    max-height: calc(100vh - 100px);
   }
 
   .navPrev {
-    left: 8px;
+    left: 12px;
+    width: 44px;
+    height: 44px;
+    font-size: 1.4rem;
   }
 
   .navNext {
-    right: 8px;
+    right: 12px;
+    width: 44px;
+    height: 44px;
+    font-size: 1.4rem;
   }
 
   .close {
-    top: 8px;
-    right: 8px;
+    top: 12px;
+    right: 12px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
   }
 
   .counter {
-    bottom: 8px;
+    bottom: 12px;
+    padding: 6px 12px;
+    font-size: 0.8rem;
   }
 }
