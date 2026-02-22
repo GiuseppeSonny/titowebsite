@@ -5,7 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useState } from "react";
 
 const Header = ({ theme = "dark", onToggleTheme }) => {
-  const { isAdmin, user, logout } = useAuth();
+  const { isAdmin, user, logout, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const onAdminPage = location.pathname.startsWith("/admin");
@@ -73,14 +73,14 @@ const Header = ({ theme = "dark", onToggleTheme }) => {
               </button>
             </li>
           )}
-          {!user && (
+          {!isAdmin && (
             <li>
-              <NavLink
-                to="/admin"
-                className={({ isActive }) => (isActive ? styles.active : styles.devLink)}
+              <button 
+                className={styles.devBtn}
+                onClick={loginWithGoogle}
               >
                 Dev
-              </NavLink>
+              </button>
             </li>
           )}
           {onAdminPage && user && (

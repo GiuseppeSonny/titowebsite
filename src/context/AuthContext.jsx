@@ -15,8 +15,8 @@ export const AuthProvider = ({ children }) => {
       setUser(firebaseUser);
       if (firebaseUser) {
         const email = (firebaseUser.email || "").toLowerCase();
-        const envAdmin = (import.meta.env.VITE_ADMIN_EMAIL || "").toLowerCase();
-        if (envAdmin && email === envAdmin) {
+        const envAdmins = (import.meta.env.VITE_ADMIN_EMAIL || "").toLowerCase().split(",").map(e => e.trim());
+        if (envAdmins.includes(email)) {
           setIsAdmin(true);
         } else {
           try {
