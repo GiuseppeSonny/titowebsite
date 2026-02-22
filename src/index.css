@@ -13,3 +13,28 @@ body {
 #root {
   min-height: 100vh;
 }
+
+/* Custom graffiti cursor for clickable elements on hover */
+button:hover, a:hover, input:hover, textarea:hover, select:hover, [role="button"]:hover, [onclick]:hover, .clickable:hover {
+  cursor: url('/icons8-graffiti-art-32.png') 16 16, auto !important;
+}
+
+/* Footer cursor override - maximum specificity */
+body div.footer:hover,
+html body div.footer:hover,
+.footer:hover,
+.footer *:hover {
+  cursor: url('/icons8-graffiti-art-32.png') 16 16, auto !important;
+}
+
+/* Disable custom cursor in dev mode */
+body.dev-mode button,
+body.dev-mode a,
+body.dev-mode input,
+body.dev-mode textarea,
+body.dev-mode select,
+body.dev-mode [role="button"],
+body.dev-mode [onclick],
+body.dev-mode .clickable {
+  cursor: auto !important;
+}

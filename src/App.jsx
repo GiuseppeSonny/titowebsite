@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import Header from "./componets/Header/Header";
@@ -19,6 +19,19 @@ import { DataProvider } from "./context/DataContext";
 const AppLayout = ({ theme, toggleTheme }) => {
   const location = useLocation();
   const isAdmin = location.pathname.startsWith("/admin");
+
+  // Add dev-mode class to body when in admin
+  useEffect(() => {
+    if (isAdmin) {
+      document.body.classList.add('dev-mode');
+    } else {
+      document.body.classList.remove('dev-mode');
+    }
+    
+    return () => {
+      document.body.classList.remove('dev-mode');
+    };
+  }, [isAdmin]);
 
   return (
     <div className={`App ${theme === "light" ? "theme-light" : "theme-dark"}`}>
