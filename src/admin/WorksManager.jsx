@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useData } from "../context/DataContext";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "../firebase/firebase";
 import styles from "./admin.module.scss";
 
 const CATEGORIES = ["recent", "internal", "external", "future", "old"];
@@ -14,8 +16,71 @@ const WorksManager = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [filterCat, setFilterCat] = useState("all");
+  const [uploadingFile, setUploadingFile] = useState(false);
+  const [filePreview, setFilePreview] = useState(null);
+  const fileInputRef = useRef(null);
 
   const handleChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+
+  const handleFileSelect = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      setError("Please select an image file.");
+      return;
+    }
+    // Simple client-side resize to max 1200px width/height and moderate quality
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      const img = new Image();
+      img.onload = async () => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        let { width, height } = img;
+        const max = 1200;
+        if (width > max || height > max) {
+          if (width > height) {
+            height = (height / width) * max;
+            width = max;
+          } else {
+            width = (width / height) * max;
+            height = max;
+          }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        ctx.drawImage(img, 0, 0, width, height);
+        canvas.toBlob(
+          async (blob) => {
+            if (!blob) {
+              setError("Failed to process image.");
+              return;
+            }
+            setUploadingFile(true);
+            setError("");
+            const storageRef = ref(storage, `works/${Date.now()}-${file.name}`);
+            try {
+              await uploadBytes(storageRef, blob);
+              const publicUrl = await getDownloadURL(storageRef);
+              setForm((f) => ({ ...f, image: publicUrl }));
+              setFilePreview(publicUrl);
+            } catch (err) {
+              console.error("Upload error:", err);
+              setError("Upload failed. Try using the URL field instead.");
+            } finally {
+              setUploadingFile(false);
+            }
+          },
+          "image/jpeg",
+          0.85
+        );
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const triggerFileSelect = () => fileInputRef.current?.click();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -57,6 +122,9 @@ const WorksManager = () => {
     setForm(makeEmptyWork(filterCat === "all" ? "recent" : filterCat));
     setEditingId(null);
     setShowForm(false);
+    setFilePreview(null);
+    setError("");
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const filtered = filterCat === "all" ? works : works.filter((w) => w.category === filterCat);
@@ -65,7 +133,7 @@ const WorksManager = () => {
     <div className={styles.managerSection}>
       <div className={styles.managerHeader}>
         <h2>Works</h2>
-        <button className={styles.addBtn} onClick={() => { setShowForm(true); setEditingId(null); setForm(makeEmptyWork(filterCat === "all" ? "recent" : filterCat)); }}>
+        <button className={styles.addBtn} onClick={() => { setShowForm(true); setEditingId(null); setForm(makeEmptyWork(filterCat === "all" ? "recent" : filterCat)); setFilePreview(null); setError(""); if (fileInputRef.current) fileInputRef.current.value = ""; }}>
           + Add Work
         </button>
       </div>
@@ -105,6 +173,13 @@ const WorksManager = () => {
               Image URL
               <input name="image" value={form.image} onChange={handleChange} placeholder="https://..." />
             </label>
+            <label className={styles.fullWidth}>
+              Or upload from your computer
+              <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileSelect} style={{ display: "none" }} />
+              <button type="button" className={styles.saveBtn} onClick={triggerFileSelect} disabled={uploadingFile}>
+                {uploadingFile ? "Uploading…" : "Choose file"}
+              </button>
+            </label>
             <label>
               Link
               <input name="link" value={form.link} onChange={handleChange} placeholder="https://..." />
@@ -114,9 +189,9 @@ const WorksManager = () => {
               <input name="tags" value={form.tags} onChange={handleChange} placeholder="Tag1, Tag2, Tag3" />
             </label>
           </div>
-          {form.image && (
+          {(form.image || filePreview) && (
             <div className={styles.imagePreview}>
-              <img src={form.image} alt="preview" />
+              <img src={filePreview || form.image} alt="preview" />
             </div>
           )}
           <div className={styles.formActions}>
