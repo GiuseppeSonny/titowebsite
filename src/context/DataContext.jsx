@@ -53,14 +53,45 @@ const defaultContacts = {
   twitter: "",
 };
 
+const defaultHome = {
+  hero: {
+    kicker: "Street Artist / 2026",
+    title: "Stencils on concrete",
+    subtitle: "that glow after dark",
+    subhead: "Raw blacks, bright reds, and layered wheatpaste textures—urban stories sprayed loud across the city.",
+    primaryCta: "View the stencils",
+    secondaryCta: "Commission a wall",
+    metrics: [
+      { value: "73", label: "Murals painted" },
+      { value: "18", label: "Cities tagged" },
+      { value: "∞", label: "Ideas in ink" },
+    ],
+    currentFocus: {
+      title: "Night train murals",
+      description: "Neon, chrome, grit"
+    },
+    techStack: ["Spray", "Ink", "Light"],
+    upcomingDrop: {
+      title: "Subway Bloom",
+      date: "Spring equinox"
+    }
+  },
+  video: {
+    url: "",
+    title: "",
+    enabled: false
+  }
+};
+
 export const DataProvider = ({ children }) => {
   const [works, setWorks] = useState(defaultWorks);
   const [events, setEvents] = useState(defaultEvents);
   const [photos, setPhotos] = useState(defaultPhotos);
   const [about, setAbout] = useState(defaultAbout);
   const [contacts, setContacts] = useState(defaultContacts);
+  const [home, setHome] = useState(defaultHome);
   const [firestoreReady, setFirestoreReady] = useState(false);
-  const [ready, setReady] = useState({ works: false, events: false, photos: false, about: false, contacts: false });
+  const [ready, setReady] = useState({ works: false, events: false, photos: false, about: false, contacts: false, home: false });
 
   useEffect(() => {
     const unsubWorks = onSnapshot(
@@ -116,6 +147,19 @@ export const DataProvider = ({ children }) => {
       () => setReady((r) => ({ ...r, contacts: false }))
     );
 
+    const unsubHome = onSnapshot(
+      doc(db, "home", "main"),
+      (snap) => {
+        if (snap.exists()) {
+          setHome({ id: snap.id, ...snap.data() });
+        } else {
+          setHome(defaultHome);
+        }
+        setReady((r) => ({ ...r, home: true }));
+      },
+      () => setReady((r) => ({ ...r, home: false }))
+    );
+
     setFirestoreReady(true);
 
     return () => {
@@ -124,6 +168,7 @@ export const DataProvider = ({ children }) => {
       unsubPhotos();
       unsubAbout();
       unsubContacts();
+      unsubHome();
     };
   }, []);
 
@@ -233,13 +278,23 @@ export const DataProvider = ({ children }) => {
     }
   };
 
+  // Home update
+  const updateHome = async (data) => {
+    try {
+      await setDoc(doc(db, "home", "main"), data, { merge: true });
+    } catch (err) {
+      console.error("updateHome failed", err);
+      throw err;
+    }
+  };
+
   return (
     <DataContext.Provider value={{
-      works, events, photos, about, contacts, firestoreReady,
+      works, events, photos, about, contacts, home, firestoreReady,
       addWork, updateWork, deleteWork,
       addEvent, updateEvent, deleteEvent,
       addPhoto, updatePhoto, deletePhoto,
-      updateAbout, updateContacts,
+      updateAbout, updateContacts, updateHome,
     }}>
       {children}
     </DataContext.Provider>

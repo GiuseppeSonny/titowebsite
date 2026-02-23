@@ -6,6 +6,10 @@
   position: relative;
 }
 
+.homeVideo {
+  margin: 2rem 0;
+}
+
 .hero {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));

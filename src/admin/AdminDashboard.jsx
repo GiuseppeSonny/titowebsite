@@ -8,10 +8,12 @@ import PhotosManager from "./PhotosManager";
 import AboutManager from "./AboutManager";
 import ContactsManager from "./ContactsManager";
 import AdminsManager from "./AdminsManager";
+import HomeManager from "./HomeManager";
 import styles from "./admin.module.scss";
 
 const TABS = [
   { id: "overview", label: "Overview", icon: "◈" },
+  { id: "home", label: "Home", icon: "🏠" },
   { id: "works", label: "Works", icon: "🖼" },
   { id: "photos", label: "Photos", icon: "📷" },
   { id: "events", label: "Events", icon: "📅" },
@@ -33,6 +35,7 @@ const AdminDashboard = () => {
 
   const renderContent = () => {
     switch (activeTab) {
+      case "home": return <HomeManager />;
       case "works": return <WorksManager />;
       case "photos": return <PhotosManager />;
       case "events": return <EventsManager />;

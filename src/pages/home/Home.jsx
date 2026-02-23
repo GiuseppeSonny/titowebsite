@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./home.module.scss";
 import { useData } from "../../context/DataContext";
+import MediaPlayer from "../../componets/MediaPlayer/MediaPlayer";
 
 const Home = () => {
   const navigate = useNavigate();
-  const { events: rawEvents, photos, works } = useData();
+  const { events: rawEvents, photos, works, home } = useData();
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
@@ -124,31 +125,29 @@ const Home = () => {
     <div className={styles.home}>
       <section className={styles.hero}>
         <div className={styles.heroContent}>
-          <p className={styles.kicker}>Street Artist / 2026</p>
+          <p className={styles.kicker}>{home.hero?.kicker || "Street Artist / 2026"}</p>
           <h1>
-            Stencils on concrete
-            <span> that glow after dark</span>
+            {home.hero?.title || "Stencils on concrete"}
+            <span>{home.hero?.subtitle || " that glow after dark"}</span>
           </h1>
           <p className={styles.subhead}>
-            Raw blacks, bright reds, and layered wheatpaste textures—urban stories sprayed loud across the city.
+            {home.hero?.subhead || "Raw blacks, bright reds, and layered wheatpaste textures—urban stories sprayed loud across the city."}
           </p>
           <div className={styles.ctaRow}>
-            <button className={styles.primaryCta}>View the stencils</button>
-            <button className={styles.secondaryCta}>Commission a wall</button>
+            <button className={styles.primaryCta}>{home.hero?.primaryCta || "View the stencils"}</button>
+            <button className={styles.secondaryCta}>{home.hero?.secondaryCta || "Commission a wall"}</button>
           </div>
           <div className={styles.metrics}>
-            <div>
-              <span>73</span>
-              <p>Murals painted</p>
-            </div>
-            <div>
-              <span>18</span>
-              <p>Cities tagged</p>
-            </div>
-            <div>
-              <span>∞</span>
-              <p>Ideas in ink</p>
-            </div>
+            {(home.hero?.metrics || [
+              { value: "73", label: "Murals painted" },
+              { value: "18", label: "Cities tagged" },
+              { value: "∞", label: "Ideas in ink" },
+            ]).map((metric, index) => (
+              <div key={index}>
+                <span>{metric.value}</span>
+                <p>{metric.label}</p>
+              </div>
+            ))}
           </div>
         </div>
         <div className={styles.heroPanel}>
@@ -156,25 +155,33 @@ const Home = () => {
           <div className={styles.cardStack}>
             <div className={styles.cardPrimary}>
               <p>Current focus</p>
-              <h3>Night train murals</h3>
-              <span>Neon, chrome, grit</span>
+              <h3>{home.hero?.currentFocus?.title || "Night train murals"}</h3>
+              <span>{home.hero?.currentFocus?.description || "Neon, chrome, grit"}</span>
             </div>
             <div className={styles.cardSecondary}>
               <p>Tech stack</p>
               <div className={styles.chips}>
-                {"Spray · Ink · Light ".split(" · ").map((tech) => (
+                {(home.hero?.techStack || ["Spray", "Ink", "Light"]).map((tech) => (
                   <span key={tech}>{tech}</span>
                 ))}
               </div>
             </div>
             <div className={styles.cardTertiary}>
               <p>Upcoming drop</p>
-              <h4>Subway Bloom</h4>
-              <small>Spring equinox</small>
+              <h4>{home.hero?.upcomingDrop?.title || "Subway Bloom"}</h4>
+              <small>{home.hero?.upcomingDrop?.date || "Spring equinox"}</small>
             </div>
           </div>
         </div>
       </section>
+
+      <MediaPlayer
+        url={home.video?.url || ""}
+        title={home.video?.title || ""}
+        enabled={home.video?.enabled || false}
+        className={styles.homeVideo}
+        alwaysShow={true}
+      />
 
       <section className={styles.highlights}>
         {highlights.map((item) => (
