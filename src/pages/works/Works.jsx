@@ -42,7 +42,14 @@ const Works = () => {
         {projects.map((project, index) => (
           <article key={project.title} className={styles.card} onClick={() => openModal(index)}>
             <div className={styles.cardImage}>
-              <img src={project.image} alt={project.title} />
+              {project.image ? (
+                <img src={project.image} alt={project.title} />
+              ) : (
+                <div className={styles.placeholderImage}>
+                  <div className={styles.placeholderIcon}>🖼</div>
+                  <span>No Image</span>
+                </div>
+              )}
             </div>
             <div className={styles.cardHead}>
               <div className={styles.pill}>Fresh paint</div>
@@ -67,7 +74,14 @@ const Works = () => {
             <button className={styles.closeButton} onClick={closeModal}>×</button>
             <div className={styles.modalContent}>
               <div className={styles.cardImage}>
-                <img src={projects[selectedCard].image} alt={projects[selectedCard].title} />
+                {projects[selectedCard].image ? (
+                  <img src={projects[selectedCard].image} alt={projects[selectedCard].title} />
+                ) : (
+                  <div className={styles.placeholderImage}>
+                    <div className={styles.placeholderIcon}>🖼</div>
+                    <span>No Image</span>
+                  </div>
+                )}
               </div>
               <div className={styles.cardHead}>
                 <div className={styles.pill}>Fresh paint</div>

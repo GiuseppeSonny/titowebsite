@@ -102,6 +102,32 @@
   display: block;
 }
 
+.placeholderImage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: linear-gradient(135deg, #2a2a2a, #3a3a3a);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.7);
+  }
+}
+
+.placeholderImage .placeholderIcon {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+  opacity: 0.6;
+}
+
 /* Carousel/Lightbox */
 .carouselOverlay {
   position: fixed;
@@ -140,6 +166,22 @@
   object-fit: contain;
   border-radius: 8px;
   box-shadow: 0 20px 60px rgba(255, 140, 0, 0.2);
+  display: block;
+}
+
+.carouselImage .placeholderImage {
+  max-width: 90vw;
+  max-height: calc(100vh - 120px);
+  background: linear-gradient(135deg, #2a2a2a, #3a3a3a);
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+  
+  .placeholderIcon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
 }
 
 .close {

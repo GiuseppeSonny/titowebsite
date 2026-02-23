@@ -14,9 +14,9 @@ import { db } from "../firebase/firebase";
 const DataContext = createContext(null);
 
 const defaultWorks = [
-  { id: "default-1", title: "Neon Pulse", desc: "6-meter mural under the ring road — chrome letters pulsing with UV ink and hidden blacklight poetry.", tags: ["UV Ink", "Chrome", "Lettering"], image: "https://picsum.photos/seed/neonpulse/400/300.jpg", category: "recent", link: "#" },
-  { id: "default-2", title: "Ghost Lines", desc: "Projection-mapped trains painted in motion; layers of aerosol, light, and glitchy typographic loops.", tags: ["Projection", "Motion", "Graffiti"], image: "https://picsum.photos/seed/ghostlines/400/300.jpg", category: "recent", link: "#" },
-  { id: "default-3", title: "Concrete Bloom", desc: "Abandoned warehouse takeover with fluorescent flora, cut vinyl stickers, and a breathing soundbed.", tags: ["Fluoro", "Stickers", "Sound"], image: "https://picsum.photos/seed/concretebloom/400/300.jpg", category: "recent", link: "#" },
+  { id: "default-1", title: "Neon Pulse", desc: "6-meter mural under the ring road — chrome letters pulsing with UV ink and hidden blacklight poetry.", tags: ["UV Ink", "Chrome", "Lettering"], image: "", category: "recent", link: "#" },
+  { id: "default-2", title: "Ghost Lines", desc: "Projection-mapped trains painted in motion; layers of aerosol, light, and glitchy typographic loops.", tags: ["Projection", "Motion", "Graffiti"], image: "", category: "recent", link: "#" },
+  { id: "default-3", title: "Concrete Bloom", desc: "Abandoned warehouse takeover with fluorescent flora, cut vinyl stickers, and a breathing soundbed.", tags: ["Fluoro", "Stickers", "Sound"], image: "", category: "recent", link: "#" },
 ];
 
 const defaultEvents = [
@@ -26,12 +26,12 @@ const defaultEvents = [
 ];
 
 const defaultPhotos = [
-  { id: "default-p1", url: "https://picsum.photos/seed/photo1/600/400.jpg", caption: "Street mural downtown", category: "murals" },
-  { id: "default-p2", url: "https://picsum.photos/seed/photo2/600/400.jpg", caption: "UV night piece", category: "uv" },
-  { id: "default-p3", url: "https://picsum.photos/seed/photo3/600/400.jpg", caption: "Rooftop installation", category: "installations" },
-  { id: "default-p4", url: "https://picsum.photos/seed/photo4/600/400.jpg", caption: "Warehouse session", category: "murals" },
-  { id: "default-p5", url: "https://picsum.photos/seed/photo5/600/400.jpg", caption: "Canal wall piece", category: "external" },
-  { id: "default-p6", url: "https://picsum.photos/seed/photo6/600/400.jpg", caption: "Studio experiments", category: "internal" },
+  { id: "default-p1", url: "", caption: "Street mural downtown", category: "murals" },
+  { id: "default-p2", url: "", caption: "UV night piece", category: "uv" },
+  { id: "default-p3", url: "", caption: "Rooftop installation", category: "installations" },
+  { id: "default-p4", url: "", caption: "Warehouse session", category: "murals" },
+  { id: "default-p5", url: "", caption: "Canal wall piece", category: "external" },
+  { id: "default-p6", url: "", caption: "Studio experiments", category: "internal" },
 ];
 
 const defaultAbout = {

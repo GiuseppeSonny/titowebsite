@@ -39,7 +39,14 @@ const Photos = () => {
             className={styles.thumb}
             onClick={() => openCarousel(index)}
           >
-            <img src={photo.url} alt="" loading="lazy" />
+            {photo.url ? (
+              <img src={photo.url} alt="" loading="lazy" />
+            ) : (
+              <div className={styles.placeholderImage}>
+                <div className={styles.placeholderIcon}>📷</div>
+                <span>No Image</span>
+              </div>
+            )}
           </div>
         ))}
       </div>
@@ -51,7 +58,14 @@ const Photos = () => {
               ×
             </button>
             <div className={styles.carouselImage}>
-              <img src={photos[selectedIndex].url} alt="" />
+              {photos[selectedIndex].url ? (
+                <img src={photos[selectedIndex].url} alt="" />
+              ) : (
+                <div className={styles.placeholderImage}>
+                  <div className={styles.placeholderIcon}>📷</div>
+                  <span>No Image</span>
+                </div>
+              )}
             </div>
             <button className={styles.navPrev} onClick={prev} aria-label="Previous">
               ‹
