@@ -1,4 +1,4 @@
-.photos {
+.products {
   min-height: 100vh;
   background:
     radial-gradient(ellipse at top left, rgba(255, 140, 0, 0.08) 0%, transparent 50%),
@@ -282,7 +282,7 @@
 
 /* Mobile */
 @media (max-width: 768px) {
-  .photos {
+  .products {
     padding: 20px 16px;
   }
 

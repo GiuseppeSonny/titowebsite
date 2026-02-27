@@ -15,7 +15,7 @@ const Header = ({ theme = "dark", onToggleTheme }) => {
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
     { name: "Contacts", path: "/contacts" },
-    { name: "Photos", path: "/photos" },
+    { name: "Products", path: "/products" },
   ];
 
   const worksSubpages = [

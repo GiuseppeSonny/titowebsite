@@ -6,7 +6,7 @@ import MediaPlayer from "../../componets/MediaPlayer/MediaPlayer";
 
 const Home = () => {
   const navigate = useNavigate();
-  const { events: rawEvents, photos, works, home } = useData();
+  const { events: rawEvents, products, works, home } = useData();
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
@@ -15,8 +15,8 @@ const Home = () => {
     date: e.date instanceof Date ? e.date : new Date(e.date + "T12:00:00"),
   }));
 
-  const highlights = photos.slice(0, 3).map((photo) => {
-    let link = "/photos";
+  const highlights = (Array.isArray(products) ? products : []).slice(0, 3).map((photo) => {
+    let link = "/products";
     if (photo.workId) {
       const work = works.find((w) => w.id === photo.workId);
       if (work && work.category && work.category !== "recent") {

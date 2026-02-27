@@ -1,20 +1,23 @@
 import React, { useState } from "react";
-import styles from "./Photos.module.scss";
+import styles from "./Products.module.scss";
 import { useData } from "../../context/DataContext";
 
-const Photos = () => {
-  const { photos } = useData();
+const Products = () => {
+  const { products } = useData();
   const [selectedIndex, setSelectedIndex] = useState(null);
+
+  // Safety check - ensure products is an array
+  const productsArray = Array.isArray(products) ? products : [];
 
   const openCarousel = (index) => setSelectedIndex(index);
   const closeCarousel = () => setSelectedIndex(null);
 
   const next = () => {
-    setSelectedIndex((prev) => (prev + 1) % photos.length);
+    setSelectedIndex((prev) => (prev + 1) % productsArray.length);
   };
 
   const prev = () => {
-    setSelectedIndex((prev) => (prev - 1 + photos.length) % photos.length);
+    setSelectedIndex((prev) => (prev - 1 + productsArray.length) % productsArray.length);
   };
 
   const handleKeyDown = (e) => {
@@ -25,22 +28,22 @@ const Photos = () => {
   };
 
   return (
-    <div className={styles.photos} onKeyDown={handleKeyDown} tabIndex={0}>
+    <div className={styles.products} onKeyDown={handleKeyDown} tabIndex={0}>
       <header className={styles.header}>
         <p className={styles.kicker}>Gallery</p>
-        <h1>Photos</h1>
+        <h1>Products</h1>
         <p className={styles.subhead}>Pure visuals—no text, just the work.</p>
       </header>
 
       <div className={styles.grid}>
-        {photos.map((photo, index) => (
+        {productsArray.map((product, index) => (
           <div
-            key={photo.id}
+            key={product.id}
             className={styles.thumb}
             onClick={() => openCarousel(index)}
           >
-            {photo.url ? (
-              <img src={photo.url} alt="" loading="lazy" />
+            {product.url ? (
+              <img src={product.url} alt="" loading="lazy" />
             ) : (
               <div className={styles.placeholderImage}>
                 <div className={styles.placeholderIcon}>📷</div>
@@ -58,8 +61,8 @@ const Photos = () => {
               ×
             </button>
             <div className={styles.carouselImage}>
-              {photos[selectedIndex].url ? (
-                <img src={photos[selectedIndex].url} alt="" />
+              {productsArray[selectedIndex].url ? (
+                <img src={productsArray[selectedIndex].url} alt="" />
               ) : (
                 <div className={styles.placeholderImage}>
                   <div className={styles.placeholderIcon}>📷</div>
@@ -74,7 +77,7 @@ const Photos = () => {
               ›
             </button>
             <div className={styles.counter}>
-              {selectedIndex + 1} / {photos.length}
+              {selectedIndex + 1} / {productsArray.length}
             </div>
           </div>
         </div>
@@ -83,4 +86,4 @@ const Photos = () => {
   );
 };
 
-export default Photos;
+export default Products;

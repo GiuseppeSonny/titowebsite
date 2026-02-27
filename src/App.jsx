@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from "react-router-dom";
 import "./App.css";
 import Header from "./componets/Header/Header";
 import Footer from "./componets/Header/footer/Footer";
@@ -11,7 +11,7 @@ import ExternalWorks from "./pages/works/ExternalWorks";
 import FutureWorks from "./pages/works/FutureWorks";
 import OldWorks from "./pages/works/OldWorks";
 import Home from "./pages/home/Home";
-import Photos from "./pages/photos/Photos";
+import Products from "./pages/products/Products";
 import AdminPage from "./admin/AdminPage";
 import { AuthProvider } from "./context/AuthContext";
 import { DataProvider } from "./context/DataContext";
@@ -46,7 +46,8 @@ const AppLayout = ({ theme, toggleTheme }) => {
           <Route path="/works/external" element={<ExternalWorks />} />
           <Route path="/works/future" element={<FutureWorks />} />
           <Route path="/works/old" element={<OldWorks />} />
-          <Route path="/photos" element={<Photos />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/photos" element={<Navigate to="/products" replace />} />
           <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </div>

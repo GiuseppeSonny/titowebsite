@@ -25,7 +25,7 @@ const defaultEvents = [
   { id: "default-e3", title: "Graffiti Battle", location: "Queens Warehouse", type: "battle", date: "2026-04-05" },
 ];
 
-const defaultPhotos = [
+const defaultProducts = [
   { id: "default-p1", url: "", caption: "Street mural downtown", category: "murals" },
   { id: "default-p2", url: "", caption: "UV night piece", category: "uv" },
   { id: "default-p3", url: "", caption: "Rooftop installation", category: "installations" },
@@ -86,12 +86,12 @@ const defaultHome = {
 export const DataProvider = ({ children }) => {
   const [works, setWorks] = useState(defaultWorks);
   const [events, setEvents] = useState(defaultEvents);
-  const [photos, setPhotos] = useState(defaultPhotos);
+  const [products, setProducts] = useState(defaultProducts);
   const [about, setAbout] = useState(defaultAbout);
   const [contacts, setContacts] = useState(defaultContacts);
   const [home, setHome] = useState(defaultHome);
   const [firestoreReady, setFirestoreReady] = useState(false);
-  const [ready, setReady] = useState({ works: false, events: false, photos: false, about: false, contacts: false, home: false });
+  const [ready, setReady] = useState({ works: false, events: false, products: false, about: false, contacts: false, home: false });
 
   useEffect(() => {
     const unsubWorks = onSnapshot(
@@ -112,13 +112,13 @@ export const DataProvider = ({ children }) => {
       () => setReady((r) => ({ ...r, events: false }))
     );
 
-    const unsubPhotos = onSnapshot(
-      collection(db, "photos"),
+    const unsubProducts = onSnapshot(
+      collection(db, "products"),
       (snap) => {
-        setPhotos(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
-        setReady((r) => ({ ...r, photos: true }));
+        setProducts(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+        setReady((r) => ({ ...r, products: true }));
       },
-      () => setReady((r) => ({ ...r, photos: false }))
+      () => setReady((r) => ({ ...r, products: false }))
     );
 
     const unsubAbout = onSnapshot(
@@ -165,7 +165,7 @@ export const DataProvider = ({ children }) => {
     return () => {
       unsubWorks();
       unsubEvents();
-      unsubPhotos();
+      unsubProducts();
       unsubAbout();
       unsubContacts();
       unsubHome();
@@ -231,29 +231,29 @@ export const DataProvider = ({ children }) => {
     }
   };
 
-  // Photos CRUD
-  const addPhoto = async (photo) => {
+  // Products CRUD
+  const addProduct = async (product) => {
     try {
-      const docRef = await addDoc(collection(db, "photos"), { ...photo, createdAt: serverTimestamp() });
+      const docRef = await addDoc(collection(db, "products"), { ...product, createdAt: serverTimestamp() });
       return docRef.id;
     } catch (err) {
-      console.error("addPhoto failed", err);
+      console.error("addProduct failed", err);
       throw err;
     }
   };
-  const updatePhoto = async (id, data) => {
+  const updateProduct = async (id, data) => {
     try {
-      await updateDoc(doc(db, "photos", id), data);
+      await updateDoc(doc(db, "products", id), data);
     } catch (err) {
-      console.error("updatePhoto failed", err);
+      console.error("updateProduct failed", err);
       throw err;
     }
   };
-  const deletePhoto = async (id) => {
+  const deleteProduct = async (id) => {
     try {
-      await deleteDoc(doc(db, "photos", id));
+      await deleteDoc(doc(db, "products", id));
     } catch (err) {
-      console.error("deletePhoto failed", err);
+      console.error("deleteProduct failed", err);
       throw err;
     }
   };
@@ -290,10 +290,10 @@ export const DataProvider = ({ children }) => {
 
   return (
     <DataContext.Provider value={{
-      works, events, photos, about, contacts, home, firestoreReady,
+      works, events, products, about, contacts, home, firestoreReady,
       addWork, updateWork, deleteWork,
       addEvent, updateEvent, deleteEvent,
-      addPhoto, updatePhoto, deletePhoto,
+      addProduct, updateProduct, deleteProduct,
       updateAbout, updateContacts, updateHome,
     }}>
       {children}

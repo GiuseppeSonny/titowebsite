@@ -4,13 +4,13 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase/firebase";
 import styles from "./admin.module.scss";
 
-const PHOTO_CATEGORIES = ["murals", "uv", "installations", "external", "internal", "other"];
+const PRODUCT_CATEGORIES = ["murals", "uv", "installations", "external", "internal", "other"];
 
-const emptyPhoto = { url: "", caption: "", category: "murals", link: "", workId: "" };
+const emptyProduct = { url: "", caption: "", category: "murals", link: "", workId: "" };
 
-const PhotosManager = () => {
-  const { photos, addPhoto, updatePhoto, deletePhoto, works } = useData();
-  const [form, setForm] = useState(emptyPhoto);
+const ProductsManager = () => {
+  const { products, addProduct, updateProduct, deleteProduct, works } = useData();
+  const [form, setForm] = useState(emptyProduct);
   const [editingId, setEditingId] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -58,7 +58,7 @@ const PhotosManager = () => {
             }
             setUploadingFile(true);
             setError("");
-            const storageRef = ref(storage, `photos/${Date.now()}-${file.name}`);
+            const storageRef = ref(storage, `products/${Date.now()}-${file.name}`);
             try {
               await uploadBytes(storageRef, blob);
               const publicUrl = await getDownloadURL(storageRef);
@@ -88,11 +88,11 @@ const PhotosManager = () => {
     setError("");
     try {
       if (editingId) {
-        await updatePhoto(editingId, form);
+        await updateProduct(editingId, form);
       } else {
-        await addPhoto(form);
+        await addProduct(form);
       }
-      setForm(emptyPhoto);
+      setForm(emptyProduct);
       setEditingId(null);
       setShowForm(false);
       setFilePreview(null);
@@ -106,19 +106,19 @@ const PhotosManager = () => {
     }
   };
 
-  const handleEdit = (photo) => {
-    setForm({ ...photo });
-    setEditingId(photo.id);
+  const handleEdit = (product) => {
+    setForm({ ...product });
+    setEditingId(product.id);
     setShowForm(true);
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Delete this photo?")) return;
-    await deletePhoto(id);
+    if (!window.confirm("Delete this product?")) return;
+    await deleteProduct(id);
   };
 
   const handleCancel = () => {
-    setForm(emptyPhoto);
+    setForm(emptyProduct);
     setEditingId(null);
     setShowForm(false);
     setFilePreview(null);
@@ -126,19 +126,19 @@ const PhotosManager = () => {
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  const filtered = filterCat === "all" ? photos : photos.filter((p) => p.category === filterCat);
+  const filtered = filterCat === "all" ? products : products.filter((p) => p.category === filterCat);
 
   return (
     <div className={styles.managerSection}>
       <div className={styles.managerHeader}>
-        <h2>Photo Gallery</h2>
-        <button className={styles.addBtn} onClick={() => { setShowForm(true); setEditingId(null); setForm(emptyPhoto); setFilePreview(null); setError(""); if (fileInputRef.current) fileInputRef.current.value = ""; }}>
-          + Add Photo
+        <h2>Product Gallery</h2>
+        <button className={styles.addBtn} onClick={() => { setShowForm(true); setEditingId(null); setForm(emptyProduct); setFilePreview(null); setError(""); if (fileInputRef.current) fileInputRef.current.value = ""; }}>
+          + Add Product
         </button>
       </div>
 
       <div className={styles.filterRow}>
-        {["all", ...PHOTO_CATEGORIES].map((cat) => (
+        {["all", ...PRODUCT_CATEGORIES].map((cat) => (
           <button
             key={cat}
             className={`${styles.filterBtn} ${filterCat === cat ? styles.active : ""}`}
@@ -151,7 +151,7 @@ const PhotosManager = () => {
 
       {showForm && (
         <form className={styles.form} onSubmit={handleSubmit}>
-          <h3>{editingId ? "Edit Photo" : "Add Photo"}</h3>
+          <h3>{editingId ? "Edit Product" : "Add Product"}</h3>
           {error && <div className={styles.errorMsg}>{error}</div>}
           <div className={styles.formGrid}>
             <label className={styles.fullWidth}>
@@ -167,12 +167,12 @@ const PhotosManager = () => {
             </label>
             <label>
               Caption
-              <input name="caption" value={form.caption} onChange={handleChange} placeholder="Photo caption" />
+              <input name="caption" value={form.caption} onChange={handleChange} placeholder="Product caption" />
             </label>
             <label>
               Category
               <select name="category" value={form.category} onChange={handleChange}>
-                {PHOTO_CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+                {PRODUCT_CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
               </select>
             </label>
             <label>
@@ -198,7 +198,7 @@ const PhotosManager = () => {
           )}
           <div className={styles.formActions}>
             <button type="submit" className={styles.saveBtn} disabled={loading}>
-              {loading ? "Saving…" : editingId ? "Update" : "Add Photo"}
+              {loading ? "Saving…" : editingId ? "Update" : "Add Product"}
             </button>
             <button type="button" className={styles.cancelBtn} onClick={handleCancel}>Cancel</button>
           </div>
@@ -206,16 +206,16 @@ const PhotosManager = () => {
       )}
 
       <div className={styles.photoGrid}>
-        {filtered.length === 0 && <p className={styles.empty}>No photos in this category.</p>}
-        {filtered.map((photo) => (
-          <div key={photo.id} className={styles.photoCard}>
-            <img src={photo.url} alt={photo.caption} />
+        {filtered.length === 0 && <p className={styles.empty}>No products in this category.</p>}
+        {filtered.map((product) => (
+          <div key={product.id} className={styles.photoCard}>
+            <img src={product.url} alt={product.caption} />
             <div className={styles.photoOverlay}>
-              <p>{photo.caption}</p>
-              <span className={styles.catBadge}>{photo.category}</span>
+              <p>{product.caption}</p>
+              <span className={styles.catBadge}>{product.category}</span>
               <div className={styles.photoActions}>
-                <button className={styles.editBtn} onClick={() => handleEdit(photo)}>Edit</button>
-                <button className={styles.deleteBtn} onClick={() => handleDelete(photo.id)}>Delete</button>
+                <button className={styles.editBtn} onClick={() => handleEdit(product)}>Edit</button>
+                <button className={styles.deleteBtn} onClick={() => handleDelete(product.id)}>Delete</button>
               </div>
             </div>
           </div>
@@ -225,4 +225,4 @@ const PhotosManager = () => {
   );
 };
 
-export default PhotosManager;
+export default ProductsManager;

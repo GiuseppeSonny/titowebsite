@@ -4,7 +4,7 @@ import { useData } from "../context/DataContext";
 import { useNavigate } from "react-router-dom";
 import WorksManager from "./WorksManager";
 import EventsManager from "./EventsManager";
-import PhotosManager from "./PhotosManager";
+import ProductsManager from "./ProductsManager";
 import AboutManager from "./AboutManager";
 import ContactsManager from "./ContactsManager";
 import AdminsManager from "./AdminsManager";
@@ -15,7 +15,7 @@ const TABS = [
   { id: "overview", label: "Overview", icon: "◈" },
   { id: "home", label: "Home", icon: "🏠" },
   { id: "works", label: "Works", icon: "🖼" },
-  { id: "photos", label: "Photos", icon: "📷" },
+  { id: "photos", label: "Products", icon: "�" },
   { id: "events", label: "Events", icon: "📅" },
   { id: "about", label: "About", icon: "👤" },
   { id: "contacts", label: "Contacts", icon: "✉" },
@@ -24,7 +24,7 @@ const TABS = [
 
 const AdminDashboard = () => {
   const { user, logout } = useAuth();
-  const { works, events, photos } = useData();
+  const { works, events, products } = useData();
   const [activeTab, setActiveTab] = useState("overview");
   const navigate = useNavigate();
 
@@ -37,7 +37,7 @@ const AdminDashboard = () => {
     switch (activeTab) {
       case "home": return <HomeManager />;
       case "works": return <WorksManager />;
-      case "photos": return <PhotosManager />;
+      case "photos": return <ProductsManager />;
       case "events": return <EventsManager />;
       case "about": return <AboutManager />;
       case "contacts": return <ContactsManager />;
@@ -54,10 +54,10 @@ const AdminDashboard = () => {
               </div>
             </div>
             <div className={styles.statCard}>
-              <span className={styles.statIcon}>📷</span>
+              <span className={styles.statIcon}>�</span>
               <div>
-                <strong>{photos.length}</strong>
-                <p>Photos</p>
+                <strong>{products.length}</strong>
+                <p>Products</p>
               </div>
             </div>
             <div className={styles.statCard}>
