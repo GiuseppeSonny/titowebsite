@@ -10,18 +10,29 @@ const MediaPlayer = ({ url, title, enabled, className, alwaysShow = false }) => 
   const [isMuted, setIsMuted] = useState(false);
   const [showControls, setShowControls] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [hasError, setHasError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !enabled) return;
 
     const handleTimeUpdate = () => setCurrentTime(video.currentTime);
-    const handleLoadedMetadata = () => setDuration(video.duration);
+    const handleLoadedMetadata = () => {
+      setDuration(video.duration);
+      setIsLoading(false);
+      setHasError(false);
+    };
     const handlePlay = () => setIsPlaying(true);
     const handlePause = () => setIsPlaying(false);
     const handleVolumeChange = () => {
       setVolume(video.volume);
       setIsMuted(video.muted);
+    };
+    const handleError = () => {
+      console.error('Video loading error');
+      setHasError(true);
+      setIsLoading(false);
     };
 
     video.addEventListener("timeupdate", handleTimeUpdate);
@@ -29,6 +40,7 @@ const MediaPlayer = ({ url, title, enabled, className, alwaysShow = false }) => 
     video.addEventListener("play", handlePlay);
     video.addEventListener("pause", handlePause);
     video.addEventListener("volumechange", handleVolumeChange);
+    video.addEventListener("error", handleError);
 
     return () => {
       video.removeEventListener("timeupdate", handleTimeUpdate);
@@ -36,8 +48,17 @@ const MediaPlayer = ({ url, title, enabled, className, alwaysShow = false }) => 
       video.removeEventListener("play", handlePlay);
       video.removeEventListener("pause", handlePause);
       video.removeEventListener("volumechange", handleVolumeChange);
+      video.removeEventListener("error", handleError);
     };
   }, [enabled]);
+
+  // Reset loading state when URL changes
+  useEffect(() => {
+    if (url) {
+      setIsLoading(true);
+      setHasError(false);
+    }
+  }, [url]);
 
   const togglePlay = () => {
     const video = videoRef.current;
@@ -111,6 +132,28 @@ const MediaPlayer = ({ url, title, enabled, className, alwaysShow = false }) => 
 
   const progressPercentage = duration > 0 ? (currentTime / duration) * 100 : 0;
 
+  // Show error state when video fails to load
+  if (hasError) {
+    return (
+      <div className={`${styles.mediaPlayer} ${styles.error} ${className || ""}`}>
+        <div className={styles.videoContainer}>
+          <div className={styles.errorContent}>
+            <div className={styles.errorIcon}>
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+              </svg>
+            </div>
+            <h3>Video Loading Error</h3>
+            <p>Unable to load video. The file may be corrupted or there's a network issue.</p>
+            <button onClick={() => window.location.reload()} className={styles.retryBtn}>
+              Retry
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (!alwaysShow && (!enabled || !url)) {
     return null;
   }
@@ -144,6 +187,7 @@ const MediaPlayer = ({ url, title, enabled, className, alwaysShow = false }) => 
           onClick={togglePlay}
           onMouseEnter={() => setShowControls(true)}
           onMouseLeave={() => setShowControls(false)}
+          onError={() => setHasError(true)}
         />
         
         {title && (

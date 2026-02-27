@@ -4,13 +4,19 @@ service firebase.storage {
     // Videos folder - admins can read/write, authenticated users can read
     match /videos/{fileName} {
       allow read: if request.auth != null;
-      allow write: if request.auth != null && (request.auth.token.email == 'giuseppeneri2323@gmail.com' || request.auth.token.email == 'itztizpixel@gmail.com' || request.auth.token.email == 'Saddsadd@gmail.com');
+      allow write: if request.auth != null && (request.auth.token.email == 'giuseppeneri2323@gmail.com' || request.auth.token.email == 'itztizpixel@gmail.com' || request.auth.token.email == 'Saddsadd@gmail.com' || request.auth.token.email == 'francesca.gucciardi8@gmail.com');
     }
     
     // Images folder - admins can read/write, authenticated users can read
     match /images/{fileName} {
       allow read: if request.auth != null;
-      allow write: if request.auth != null && (request.auth.token.email == 'giuseppeneri2323@gmail.com' || request.auth.token.email == 'itztizpixel@gmail.com' || request.auth.token.email == 'Saddsadd@gmail.com');
+      allow write: if request.auth != null && (request.auth.token.email == 'giuseppeneri2323@gmail.com' || request.auth.token.email == 'itztizpixel@gmail.com' || request.auth.token.email == 'Saddsadd@gmail.com' || request.auth.token.email == 'francesca.gucciardi8@gmail.com');
+    }
+    
+    // Photos folder - admins can read/write, authenticated users can read
+    match /photos/{fileName} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && (request.auth.token.email == 'giuseppeneri2323@gmail.com' || request.auth.token.email == 'itztizpixel@gmail.com' || request.auth.token.email == 'Saddsadd@gmail.com' || request.auth.token.email == 'francesca.gucciardi8@gmail.com');
     }
   }
 }
