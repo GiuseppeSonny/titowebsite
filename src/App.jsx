@@ -8,8 +8,6 @@ import Contacts from "./pages/contacts/Contacts";
 import Works from "./pages/works/Works";
 import InternalWorks from "./pages/works/InternalWorks";
 import ExternalWorks from "./pages/works/ExternalWorks";
-import FutureWorks from "./pages/works/FutureWorks";
-import OldWorks from "./pages/works/OldWorks";
 import Home from "./pages/home/Home";
 import Products from "./pages/products/Products";
 import AdminPage from "./admin/AdminPage";
@@ -44,8 +42,6 @@ const AppLayout = ({ theme, toggleTheme }) => {
           <Route path="/works" element={<Works />} />
           <Route path="/works/internal" element={<InternalWorks />} />
           <Route path="/works/external" element={<ExternalWorks />} />
-          <Route path="/works/future" element={<FutureWorks />} />
-          <Route path="/works/old" element={<OldWorks />} />
           <Route path="/products" element={<Products />} />
           <Route path="/photos" element={<Navigate to="/products" replace />} />
           <Route path="/admin" element={<AdminPage />} />

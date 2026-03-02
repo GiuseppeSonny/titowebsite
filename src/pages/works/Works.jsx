@@ -5,7 +5,7 @@ import { useData } from "../../context/DataContext";
 
 const Works = () => {
   const { works } = useData();
-  const projects = works.filter((w) => w.category === "recent" || !w.category);
+  const projects = works.filter((w) => !w.category || w.category === "internal" || w.category === "external");
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);

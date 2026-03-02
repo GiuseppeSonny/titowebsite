@@ -19,11 +19,9 @@ const Header = ({ theme = "dark", onToggleTheme }) => {
   ];
 
   const worksSubpages = [
-    { name: "Recent", path: "/works" },
+    { name: "Works", path: "/works" },
     { name: "Internal", path: "/works/internal" },
     { name: "External", path: "/works/external" },
-    { name: "Future", path: "/works/future" },
-    { name: "Old", path: "/works/old" },
   ];
 
   return (

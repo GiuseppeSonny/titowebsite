@@ -16,23 +16,22 @@ const Home = () => {
   }));
 
   const highlights = (() => {
+  // Use admin-selected highlights if available, otherwise fallback to auto-generated
+  if (home.highlights && home.highlights.length > 0) {
+    return home.highlights;
+  }
+  
+  // Fallback to auto-generated highlights if no admin selection
   const worksArray = Array.isArray(works) ? works : [];
   if (worksArray.length === 0) return [];
   
-  // Define the 4 categories we want to feature
-  const categories = ["recent", "internal", "external", "future"];
+  // Define the 2 categories we want to feature
+  const categories = ["internal", "external"];
   const selectedWorks = [];
   
   // Get one work from each category
   categories.forEach(category => {
-    let work;
-    if (category === "recent") {
-      // For recent category, include works with no category or "recent"
-      work = worksArray.find(w => w.category === "recent" || !w.category);
-    } else {
-      work = worksArray.find(w => w.category === category);
-    }
-    
+    const work = worksArray.find(w => w.category === category);
     if (work) {
       selectedWorks.push(work);
     }
@@ -48,9 +47,9 @@ const Home = () => {
     return {
       title: work.title || "Untitled",
       body: work.desc || "",
-      badge: work.category === "recent" || !work.category ? "Recent" : work.category.charAt(0).toUpperCase() + work.category.slice(1),
+      badge: work.category.charAt(0).toUpperCase() + work.category.slice(1),
       image: getImageUrl(work),
-      link: work.category && work.category !== "recent" ? `/works/${work.category}` : "/works",
+      link: `/works/${work.category}`,
     };
   });
 })();
@@ -195,8 +194,7 @@ const Home = () => {
       </section>
 
       <MediaPlayer
-        url={home.video?.url || ""}
-        title={home.video?.title || ""}
+        videos={home.video?.videos || []}
         enabled={home.video?.enabled || false}
         className={styles.homeVideo}
         alwaysShow={true}

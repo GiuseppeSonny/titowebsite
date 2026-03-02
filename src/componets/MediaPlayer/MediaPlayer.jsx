@@ -1,8 +1,9 @@
 import React, { useRef, useState, useEffect } from "react";
 import styles from "./MediaPlayer.module.scss";
 
-const MediaPlayer = ({ url, title, enabled, className, alwaysShow = false }) => {
+const MediaPlayer = ({ videos, enabled, className, alwaysShow = false }) => {
   const videoRef = useRef(null);
+  const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -12,6 +13,10 @@ const MediaPlayer = ({ url, title, enabled, className, alwaysShow = false }) => 
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  const currentVideo = videos && videos.length > 0 ? videos[selectedVideoIndex] : null;
+  const url = currentVideo?.url;
+  const title = currentVideo?.title;
 
   useEffect(() => {
     const video = videoRef.current;
@@ -52,13 +57,21 @@ const MediaPlayer = ({ url, title, enabled, className, alwaysShow = false }) => 
     };
   }, [enabled]);
 
-  // Reset loading state when URL changes
+  // Reset loading state when URL or selected video changes
   useEffect(() => {
     if (url) {
       setIsLoading(true);
       setHasError(false);
+      setCurrentTime(0);
+      setIsPlaying(false);
     }
-  }, [url]);
+  }, [url, selectedVideoIndex]);
+
+  const selectVideo = (index) => {
+    if (index >= 0 && index < videos.length) {
+      setSelectedVideoIndex(index);
+    }
+  };
 
   const togglePlay = () => {
     const video = videoRef.current;
@@ -179,6 +192,30 @@ const MediaPlayer = ({ url, title, enabled, className, alwaysShow = false }) => 
 
   return (
     <div className={`${styles.mediaPlayer} ${className || ""}`}>
+      {videos && videos.length > 1 && (
+        <div className={styles.videoSelector}>
+          <h4>Select Video ({selectedVideoIndex + 1}/{videos.length})</h4>
+          <div className={styles.videoThumbnails}>
+            {videos.map((video, index) => (
+              <button
+                key={video.id}
+                onClick={() => selectVideo(index)}
+                className={`${styles.thumbnailButton} ${index === selectedVideoIndex ? styles.active : ''}`}
+              >
+                <div className={styles.thumbnail}>
+                  <video>
+                    <source src={video.url} type="video/mp4" />
+                  </video>
+                  <div className={styles.thumbnailOverlay}>
+                    <span>{video.title}</span>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+      
       <div className={styles.videoContainer}>
         <video
           ref={videoRef}
