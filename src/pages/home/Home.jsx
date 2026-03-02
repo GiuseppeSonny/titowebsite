@@ -16,45 +16,41 @@ const Home = () => {
   }));
 
   const highlights = (() => {
-  const productsArray = Array.isArray(products) ? products : [];
-  if (productsArray.length === 0) return [];
+  const worksArray = Array.isArray(works) ? works : [];
+  if (worksArray.length === 0) return [];
   
-  // Get unique categories
-  const categories = [...new Set(productsArray.map(p => p.category).filter(Boolean))];
-  const selectedPhotos = [];
+  // Define the 4 categories we want to feature
+  const categories = ["recent", "internal", "external", "future"];
+  const selectedWorks = [];
   
-  // Try to get one photo from each category, up to 4 total
-  const targetCount = Math.min(4, productsArray.length);
-  
-  if (categories.length >= targetCount) {
-    // Take first photo from each of the first 4 categories
-    categories.slice(0, targetCount).forEach(category => {
-      const photo = productsArray.find(p => p.category === category);
-      if (photo) selectedPhotos.push(photo);
-    });
-  } else {
-    // Not enough categories, just take first 4 photos
-    selectedPhotos.push(...productsArray.slice(0, targetCount));
-  }
-  
-  return selectedPhotos.map((photo) => {
-    let link = "/products";
-    if (photo.workId) {
-      const work = works.find((w) => w.id === photo.workId);
-      if (work && work.category && work.category !== "recent") {
-        link = `/works/${work.category}`;
-      } else {
-        link = "/works";
-      }
-    } else if (photo.link) {
-      link = photo.link;
+  // Get one work from each category
+  categories.forEach(category => {
+    let work;
+    if (category === "recent") {
+      // For recent category, include works with no category or "recent"
+      work = worksArray.find(w => w.category === "recent" || !w.category);
+    } else {
+      work = worksArray.find(w => w.category === category);
     }
+    
+    if (work) {
+      selectedWorks.push(work);
+    }
+  });
+  
+  return selectedWorks.map((work) => {
+    const getImageUrl = (work) => {
+      if (work.image) return work.image;
+      if (work.images && work.images.length > 0) return work.images[0];
+      return null;
+    };
+    
     return {
-      title: photo.caption || "Untitled",
-      body: photo.category,
-      badge: photo.category,
-      image: photo.url,
-      link,
+      title: work.title || "Untitled",
+      body: work.desc || "",
+      badge: work.category === "recent" || !work.category ? "Recent" : work.category.charAt(0).toUpperCase() + work.category.slice(1),
+      image: getImageUrl(work),
+      link: work.category && work.category !== "recent" ? `/works/${work.category}` : "/works",
     };
   });
 })();
