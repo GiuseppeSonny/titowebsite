@@ -6,7 +6,7 @@ import styles from "./admin.module.scss";
 
 const CATEGORIES = ["recent", "internal", "external", "future", "old"];
 
-const makeEmptyWork = (category = "recent") => ({ title: "", desc: "", tags: "", image: "", link: "#", category });
+const makeEmptyWork = (category = "recent") => ({ title: "", desc: "", tags: "", image: "", images: [], link: "#", category });
 
 const WorksManager = () => {
   const { works, addWork, updateWork, deleteWork } = useData();
@@ -18,7 +18,9 @@ const WorksManager = () => {
   const [filterCat, setFilterCat] = useState("all");
   const [uploadingFile, setUploadingFile] = useState(false);
   const [filePreview, setFilePreview] = useState(null);
+  const [multiplePreviews, setMultiplePreviews] = useState([]);
   const fileInputRef = useRef(null);
+  const multipleFileInputRef = useRef(null);
 
   const handleChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
@@ -80,7 +82,87 @@ const WorksManager = () => {
     reader.readAsDataURL(file);
   };
 
+  const handleMultipleFileSelect = async (e) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+    
+    setUploadingFile(true);
+    setError("");
+    
+    const uploadPromises = files.map(async (file) => {
+      if (!file.type.startsWith("image/")) return null;
+      
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = async (event) => {
+          const img = new Image();
+          img.onload = async () => {
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+            let { width, height } = img;
+            const max = 1200;
+            if (width > max || height > max) {
+              if (width > height) {
+                height = (height / width) * max;
+                width = max;
+              } else {
+                width = (width / height) * max;
+                height = max;
+              }
+            }
+            canvas.width = width;
+            canvas.height = height;
+            ctx.drawImage(img, 0, 0, width, height);
+            canvas.toBlob(
+              async (blob) => {
+                if (!blob) {
+                  resolve(null);
+                  return;
+                }
+                const storageRef = ref(storage, `works/${Date.now()}-${file.name}`);
+                try {
+                  await uploadBytes(storageRef, blob);
+                  const publicUrl = await getDownloadURL(storageRef);
+                  resolve(publicUrl);
+                } catch (err) {
+                  console.error("Upload error:", err);
+                  resolve(null);
+                }
+              },
+              "image/jpeg",
+              0.85
+            );
+          };
+          img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    });
+    
+    try {
+      const urls = await Promise.all(uploadPromises);
+      const validUrls = urls.filter(url => url !== null);
+      setForm((f) => ({ ...f, images: [...(f.images || []), ...validUrls] }));
+      setMultiplePreviews(prev => [...prev, ...validUrls]);
+    } catch (err) {
+      console.error("Multiple upload error:", err);
+      setError("Some uploads failed. Try again.");
+    } finally {
+      setUploadingFile(false);
+      if (multipleFileInputRef.current) multipleFileInputRef.current.value = "";
+    }
+  };
+
   const triggerFileSelect = () => fileInputRef.current?.click();
+  const triggerMultipleFileSelect = () => multipleFileInputRef.current?.click();
+
+  const removeImage = (index) => {
+    setForm((f) => ({
+      ...f,
+      images: f.images.filter((_, i) => i !== index)
+    }));
+    setMultiplePreviews(prev => prev.filter((_, i) => i !== index));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -111,6 +193,8 @@ const WorksManager = () => {
     setForm({ ...work, tags: Array.isArray(work.tags) ? work.tags.join(", ") : work.tags });
     setEditingId(work.id);
     setShowForm(true);
+    setFilePreview(work.image || null);
+    setMultiplePreviews(work.images || []);
   };
 
   const handleDelete = async (id) => {
@@ -123,8 +207,10 @@ const WorksManager = () => {
     setEditingId(null);
     setShowForm(false);
     setFilePreview(null);
+    setMultiplePreviews([]);
     setError("");
     if (fileInputRef.current) fileInputRef.current.value = "";
+    if (multipleFileInputRef.current) multipleFileInputRef.current.value = "";
   };
 
   const filtered = filterCat === "all" ? works : works.filter((w) => w.category === filterCat);
@@ -133,7 +219,7 @@ const WorksManager = () => {
     <div className={styles.managerSection}>
       <div className={styles.managerHeader}>
         <h2>Works</h2>
-        <button className={styles.addBtn} onClick={() => { setShowForm(true); setEditingId(null); setForm(makeEmptyWork(filterCat === "all" ? "recent" : filterCat)); setFilePreview(null); setError(""); if (fileInputRef.current) fileInputRef.current.value = ""; }}>
+        <button className={styles.addBtn} onClick={() => { setShowForm(true); setEditingId(null); setForm(makeEmptyWork(filterCat === "all" ? "recent" : filterCat)); setFilePreview(null); setMultiplePreviews([]); setError(""); if (fileInputRef.current) fileInputRef.current.value = ""; if (multipleFileInputRef.current) multipleFileInputRef.current.value = ""; }}>
           + Add Work
         </button>
       </div>
@@ -180,6 +266,13 @@ const WorksManager = () => {
                 {uploadingFile ? "Uploading…" : "Choose file"}
               </button>
             </label>
+            <label className={styles.fullWidth}>
+              Multiple images (gallery)
+              <input type="file" accept="image/*" multiple ref={multipleFileInputRef} onChange={handleMultipleFileSelect} style={{ display: "none" }} />
+              <button type="button" className={styles.saveBtn} onClick={triggerMultipleFileSelect} disabled={uploadingFile}>
+                {uploadingFile ? "Uploading…" : "Choose multiple files"}
+              </button>
+            </label>
             <label>
               Link
               <input name="link" value={form.link} onChange={handleChange} placeholder="https://..." />
@@ -192,6 +285,19 @@ const WorksManager = () => {
           {(form.image || filePreview) && (
             <div className={styles.imagePreview}>
               <img src={filePreview || form.image} alt="preview" />
+            </div>
+          )}
+          {multiplePreviews.length > 0 && (
+            <div className={styles.imagePreview}>
+              <h4>Gallery Images ({multiplePreviews.length})</h4>
+              <div className={styles.multiplePreviewGrid}>
+                {multiplePreviews.map((url, index) => (
+                  <div key={index} className={styles.previewItem}>
+                    <img src={url} alt={`Preview ${index + 1}`} />
+                    <button type="button" className={styles.removeBtn} onClick={() => removeImage(index)}>×</button>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
           <div className={styles.formActions}>

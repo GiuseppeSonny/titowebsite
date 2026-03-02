@@ -280,6 +280,36 @@
   }
 }
 
+.carouselCaption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  color: white;
+  padding: 24px 20px 20px;
+  border-radius: 0 0 16px 16px;
+  
+  p {
+    margin: 0 0 8px 0;
+    font-size: 1rem;
+    line-height: 1.4;
+    font-weight: 500;
+  }
+}
+
+.carouselCategory {
+  display: inline-block;
+  background: rgba(255, 140, 0, 0.9);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 /* Mobile */
 @media (max-width: 768px) {
   .products {

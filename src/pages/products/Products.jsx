@@ -70,6 +70,16 @@ const Products = () => {
                 </div>
               )}
             </div>
+            {productsArray[selectedIndex].caption && (
+              <div className={styles.carouselCaption}>
+                <p>{productsArray[selectedIndex].caption}</p>
+                {productsArray[selectedIndex].category && (
+                  <span className={styles.carouselCategory}>
+                    {productsArray[selectedIndex].category}
+                  </span>
+                )}
+              </div>
+            )}
             <button className={styles.navPrev} onClick={prev} aria-label="Previous">
               ‹
             </button>

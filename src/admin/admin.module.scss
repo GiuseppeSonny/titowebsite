@@ -395,6 +395,52 @@
     border-radius: 6px;
     border: 1px solid #2a2a2a;
   }
+
+  h4 {
+    margin: 0 0 12px 0;
+    font-size: 0.9rem;
+    color: #aaa;
+  }
+}
+
+.multiplePreviewGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+}
+
+.previewItem {
+  position: relative;
+
+  img {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #2a2a2a;
+  }
+}
+
+.removeBtn {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+
+  &:hover {
+    background: #e03333;
+  }
 }
 
 .formActions {
