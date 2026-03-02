@@ -15,7 +15,29 @@ const Home = () => {
     date: e.date instanceof Date ? e.date : new Date(e.date + "T12:00:00"),
   }));
 
-  const highlights = (Array.isArray(products) ? products : []).slice(0, 3).map((photo) => {
+  const highlights = (() => {
+  const productsArray = Array.isArray(products) ? products : [];
+  if (productsArray.length === 0) return [];
+  
+  // Get unique categories
+  const categories = [...new Set(productsArray.map(p => p.category).filter(Boolean))];
+  const selectedPhotos = [];
+  
+  // Try to get one photo from each category, up to 4 total
+  const targetCount = Math.min(4, productsArray.length);
+  
+  if (categories.length >= targetCount) {
+    // Take first photo from each of the first 4 categories
+    categories.slice(0, targetCount).forEach(category => {
+      const photo = productsArray.find(p => p.category === category);
+      if (photo) selectedPhotos.push(photo);
+    });
+  } else {
+    // Not enough categories, just take first 4 photos
+    selectedPhotos.push(...productsArray.slice(0, targetCount));
+  }
+  
+  return selectedPhotos.map((photo) => {
     let link = "/products";
     if (photo.workId) {
       const work = works.find((w) => w.id === photo.workId);
@@ -35,6 +57,7 @@ const Home = () => {
       link,
     };
   });
+})();
 
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   
