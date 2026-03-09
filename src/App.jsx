@@ -12,7 +12,20 @@ import Home from "./pages/home/Home";
 import Products from "./pages/products/Products";
 import AdminPage from "./admin/AdminPage";
 import { AuthProvider } from "./context/AuthContext";
-import { DataProvider } from "./context/DataContext";
+import { DataProvider, useData } from "./context/DataContext";
+
+const FontProvider = ({ children }) => {
+  const { home } = useData();
+  useEffect(() => {
+    if (home.fonts) {
+      const root = document.documentElement;
+      root.style.setProperty('--font-heading', home.fonts.heading);
+      root.style.setProperty('--font-body', home.fonts.body);
+      root.style.setProperty('--font-mono', home.fonts.mono);
+    }
+  }, [home.fonts]);
+  return children;
+};
 
 const AppLayout = ({ theme, toggleTheme }) => {
   const location = useLocation();
@@ -60,7 +73,9 @@ function App() {
     <Router>
       <AuthProvider>
         <DataProvider>
-          <AppLayout theme={theme} toggleTheme={toggleTheme} />
+          <FontProvider>
+            <AppLayout theme={theme} toggleTheme={toggleTheme} />
+          </FontProvider>
         </DataProvider>
       </AuthProvider>
     </Router>

@@ -109,6 +109,11 @@ const defaultHome = {
       title: "Contact",
       subhead: "Tell us about your product idea, timeframe, and goals. We typically respond within one business day."
     }
+  },
+  fonts: {
+    heading: "'Inter', sans-serif",
+    body: "'Inter', sans-serif",
+    mono: "'JetBrains Mono', monospace"
   }
 };
 

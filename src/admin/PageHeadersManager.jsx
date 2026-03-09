@@ -33,6 +33,29 @@ const PageHeadersManager = () => {
     },
   });
 
+  const [fontsData, setFontsData] = useState({
+    heading: home.fonts?.heading || "'Inter', sans-serif",
+    body: home.fonts?.body || "'Inter', sans-serif",
+    mono: home.fonts?.mono || "'JetBrains Mono', monospace",
+  });
+
+  const fontOptions = [
+    "'Inter', sans-serif",
+    "'Roboto', sans-serif",
+    "'Open Sans', sans-serif",
+    "'Lato', sans-serif",
+    "'Montserrat', sans-serif",
+    "'Poppins', sans-serif",
+    "'Raleway', sans-serif",
+    "'Playfair Display', serif",
+    "'Merriweather', serif",
+    "'Georgia', serif",
+    "'Courier New', monospace",
+    "'JetBrains Mono', monospace",
+    "'Fira Code', monospace",
+    "'Source Code Pro', monospace",
+  ];
+
   useEffect(() => {
     setFormData({
       works: {
@@ -61,6 +84,11 @@ const PageHeadersManager = () => {
         subhead: home.pageHeaders?.contacts?.subhead || "",
       },
     });
+    setFontsData({
+      heading: home.fonts?.heading || "'Inter', sans-serif",
+      body: home.fonts?.body || "'Inter', sans-serif",
+      mono: home.fonts?.mono || "'JetBrains Mono', monospace",
+    });
   }, [home]);
 
   const handleChange = (page, field, value) => {
@@ -73,16 +101,23 @@ const PageHeadersManager = () => {
     }));
   };
 
+  const handleFontChange = (type, value) => {
+    setFontsData(prev => ({
+      ...prev,
+      [type]: value
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      await updateHome({ pageHeaders: formData });
-      alert("Page headers updated successfully!");
+      await updateHome({ pageHeaders: formData, fonts: fontsData });
+      alert("Page headers and fonts updated successfully!");
     } catch (error) {
-      console.error("Failed to update page headers:", error);
-      alert("Failed to update page headers. Please try again.");
+      console.error("Failed to update page headers and fonts:", error);
+      alert("Failed to update page headers and fonts. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -91,11 +126,51 @@ const PageHeadersManager = () => {
   return (
     <div className={styles.managerSection}>
       <div className={styles.managerHeader}>
-        <h2>Page Headers</h2>
-        <p>Edit titles and subtitles for pages across the site.</p>
+        <h2>Page Headers & Fonts</h2>
+        <p>Edit titles, subtitles, and fonts for pages across the site.</p>
       </div>
 
       <form onSubmit={handleSubmit} className={styles.managerForm}>
+        <div className={styles.formSection}>
+          <h3>Fonts</h3>
+          <div className={styles.formGroup}>
+            <label>Heading Font</label>
+            <select
+              value={fontsData.heading}
+              onChange={(e) => handleFontChange("heading", e.target.value)}
+              className={styles.formSelect}
+            >
+              {fontOptions.map(font => (
+                <option key={font} value={font}>{font.replace(/['"]/g, '')}</option>
+              ))}
+            </select>
+          </div>
+          <div className={styles.formGroup}>
+            <label>Body Font</label>
+            <select
+              value={fontsData.body}
+              onChange={(e) => handleFontChange("body", e.target.value)}
+              className={styles.formSelect}
+            >
+              {fontOptions.map(font => (
+                <option key={font} value={font}>{font.replace(/['"]/g, '')}</option>
+              ))}
+            </select>
+          </div>
+          <div className={styles.formGroup}>
+            <label>Mono Font</label>
+            <select
+              value={fontsData.mono}
+              onChange={(e) => handleFontChange("mono", e.target.value)}
+              className={styles.formSelect}
+            >
+              {fontOptions.map(font => (
+                <option key={font} value={font}>{font.replace(/['"]/g, '')}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
         {Object.entries(formData).map(([pageKey, pageData]) => (
           <div key={pageKey} className={styles.formSection}>
             <h3>{pageKey.charAt(0).toUpperCase() + pageKey.slice(1).replace(/([A-Z])/g, ' $1')}</h3>
