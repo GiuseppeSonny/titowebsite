@@ -12,13 +12,28 @@
 
 .hero {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: 32px;
-  align-items: center;
+  align-items: stretch;
   position: relative;
 }
 
 .heroContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 18px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.25)), rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+.heroText {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -29,6 +44,28 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
   position: relative;
   overflow: hidden;
+}
+
+.logoRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  flex: 1;
+  min-height: 120px;
+  position: relative;
+  z-index: 2;
+}
+
+.logoImage {
+  max-height: 440px;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.35));
 }
 
 .heroContent::before,
@@ -149,83 +186,6 @@
 }
 
 .metrics p {
-  color: var(--muted);
-}
-
-.heroPanel {
-  position: relative;
-  padding: 18px;
-}
-
-.glow {
-  position: absolute;
-  inset: 0;
-  filter: blur(60px);
-  background: radial-gradient(circle at 30% 30%, rgba(230, 57, 70, 0.4), transparent 35%),
-    radial-gradient(circle at 70% 60%, rgba(0, 0, 0, 0.4), transparent 40%);
-  opacity: 0.85;
-  z-index: 0;
-}
-
-.cardStack {
-  position: relative;
-  display: grid;
-  gap: 12px;
-  z-index: 1;
-}
-
-.cardPrimary,
-.cardSecondary,
-.cardTertiary {
-  background: rgba(0, 0, 0, 0.28);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 18px;
-  padding: 16px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
-  position: relative;
-  overflow: hidden;
-}
-
-.cardPrimary::after,
-.cardSecondary::after,
-.cardTertiary::after {
-  content: "";
-  position: absolute;
-  inset: 8px;
-  border: 1px dashed rgba(255, 255, 255, 0.12);
-  border-radius: 16px;
-  opacity: 0.6;
-  pointer-events: none;
-}
-
-.cardPrimary h3 {
-  margin: 4px 0;
-}
-
-.cardPrimary span {
-  color: var(--muted);
-}
-
-.cardSecondary .chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.cardSecondary .chips span {
-  background: rgba(255, 255, 255, 0.08);
-  padding: 6px 10px;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.cardTertiary h4 {
-  margin: 4px 0;
-}
-
-.cardTertiary small {
   color: var(--muted);
 }
 

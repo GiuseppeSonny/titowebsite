@@ -10,6 +10,8 @@ const Home = () => {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
+  const heroLogos = Array.isArray(home.hero?.logos) ? home.hero.logos : [];
+
   const upcomingEvents = rawEvents.map((e) => ({
     ...e,
     date: e.date instanceof Date ? e.date : new Date(e.date + "T12:00:00"),
@@ -143,6 +145,18 @@ const Home = () => {
     <div className={styles.home}>
       <section className={styles.hero}>
         <div className={styles.heroContent}>
+          <div className={styles.logoRow}>
+            {heroLogos.map((logo, index) => {
+              const src = typeof logo === "string" ? logo : logo?.src;
+              if (!src) return null;
+
+              const alt = typeof logo === "object" && logo?.alt ? logo.alt : `Logo ${index + 1}`;
+
+              return <img key={`${src}-${index}`} src={src} alt={alt} className={styles.logoImage} />;
+            })}
+          </div>
+        </div>
+        <div className={styles.heroText}>
           <p className={styles.kicker}>{home.hero?.kicker || "Street Artist / 2026"}</p>
           <h1>
             {home.hero?.title || "Stencils on concrete"}
@@ -151,45 +165,6 @@ const Home = () => {
           <p className={styles.subhead}>
             {home.hero?.subhead || "Raw blacks, bright reds, and layered wheatpaste textures—urban stories sprayed loud across the city."}
           </p>
-          <div className={styles.ctaRow}>
-            <button className={styles.primaryCta}>{home.hero?.primaryCta || "View the stencils"}</button>
-            <button className={styles.secondaryCta}>{home.hero?.secondaryCta || "Commission a wall"}</button>
-          </div>
-          <div className={styles.metrics}>
-            {(home.hero?.metrics || [
-              { value: "73", label: "Murals painted" },
-              { value: "18", label: "Cities tagged" },
-              { value: "∞", label: "Ideas in ink" },
-            ]).map((metric, index) => (
-              <div key={index}>
-                <span>{metric.value}</span>
-                <p>{metric.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className={styles.heroPanel}>
-          <div className={styles.glow} />
-          <div className={styles.cardStack}>
-            <div className={styles.cardPrimary}>
-              <p>Current focus</p>
-              <h3>{home.hero?.currentFocus?.title || "Night train murals"}</h3>
-              <span>{home.hero?.currentFocus?.description || "Neon, chrome, grit"}</span>
-            </div>
-            <div className={styles.cardSecondary}>
-              <p>Tech stack</p>
-              <div className={styles.chips}>
-                {(home.hero?.techStack || ["Spray", "Ink", "Light"]).map((tech) => (
-                  <span key={tech}>{tech}</span>
-                ))}
-              </div>
-            </div>
-            <div className={styles.cardTertiary}>
-              <p>Upcoming drop</p>
-              <h4>{home.hero?.upcomingDrop?.title || "Subway Bloom"}</h4>
-              <small>{home.hero?.upcomingDrop?.date || "Spring equinox"}</small>
-            </div>
-          </div>
         </div>
       </section>
 

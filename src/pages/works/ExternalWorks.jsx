@@ -3,7 +3,7 @@ import styles from "./works.module.scss";
 import { useData } from "../../context/DataContext";
 
 const ExternalWorks = () => {
-  const { works } = useData();
+  const { works, home } = useData();
   const externalProjects = works.filter((w) => w.category === "external");
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
@@ -48,9 +48,9 @@ const ExternalWorks = () => {
     <div className={styles.main}>
       <div className={styles.headerRow}>
         <div>
-          <p className={styles.kicker}>External works</p>
-          <h2>Commissioned walls & public pieces</h2>
-          <p className={styles.subhead}>Client and city collaborations across facades, shutters, and tunnels.</p>
+          <p className={styles.kicker}>{home.pageHeaders?.externalWorks?.kicker || "External works"}</p>
+          <h2>{home.pageHeaders?.externalWorks?.title || "Commissioned walls & public pieces"}</h2>
+          <p className={styles.subhead}>{home.pageHeaders?.externalWorks?.subhead || "Client and city collaborations across facades, shutters, and tunnels."}</p>
         </div>
       </div>
 
@@ -70,14 +70,6 @@ const ExternalWorks = () => {
                 <div className={styles.imageCount}>
                   +{project.images.length}
                 </div>
-              )}
-            </div>
-            <div className={styles.cardHead}>
-              <div className={styles.pill}>Commission</div>
-              {project.link && (
-                <a href={project.link} className={styles.link} onClick={(e) => e.stopPropagation()}>
-                  View →
-                </a>
               )}
             </div>
             <h3>{project.title}</h3>
@@ -118,14 +110,6 @@ const ExternalWorks = () => {
                 )}
               </div>
               <div className={styles.modalInfo}>
-                <div className={styles.cardHead}>
-                  <div className={styles.pill}>Commission</div>
-                  {selectedProject.link && (
-                    <a href={selectedProject.link} className={styles.link}>
-                      View →
-                    </a>
-                  )}
-                </div>
                 <h3>{selectedProject.title}</h3>
                 <p>{selectedProject.desc}</p>
                 <div className={styles.tags}>

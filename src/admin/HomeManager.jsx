@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useData } from "../context/DataContext";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase/firebase";
@@ -9,9 +9,11 @@ const HomeManager = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [videoFile, setVideoFile] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [logoFile, setLogoFile] = useState(null);
 
   const [formData, setFormData] = useState({
     hero: {
+      logos: Array.isArray(home.hero?.logos) ? home.hero.logos : [],
       kicker: home.hero?.kicker || "",
       title: home.hero?.title || "",
       subtitle: home.hero?.subtitle || "",
@@ -39,6 +41,40 @@ const HomeManager = () => {
     },
     highlights: home.highlights || [],
   });
+
+  // Sync formData when home data changes from Firestore
+  useEffect(() => {
+    setFormData({
+      hero: {
+        logos: Array.isArray(home.hero?.logos) ? home.hero.logos : [],
+        kicker: home.hero?.kicker || "",
+        title: home.hero?.title || "",
+        subtitle: home.hero?.subtitle || "",
+        subhead: home.hero?.subhead || "",
+        primaryCta: home.hero?.primaryCta || "",
+        secondaryCta: home.hero?.secondaryCta || "",
+        metrics: home.hero?.metrics || [
+          { value: "73", label: "Murals painted" },
+          { value: "18", label: "Cities tagged" },
+          { value: "∞", label: "Ideas in ink" },
+        ],
+        currentFocus: {
+          title: home.hero?.currentFocus?.title || "",
+          description: home.hero?.currentFocus?.description || "",
+        },
+        techStack: home.hero?.techStack || ["Spray", "Ink", "Light"],
+        upcomingDrop: {
+          title: home.hero?.upcomingDrop?.title || "",
+          date: home.hero?.upcomingDrop?.date || "",
+        },
+      },
+      video: {
+        enabled: home.video?.enabled || false,
+        videos: home.video?.videos || [],
+      },
+      highlights: home.highlights || [],
+    });
+  }, [home]);
 
   const handleInputChange = (section, field, value) => {
     setFormData(prev => ({
@@ -85,6 +121,101 @@ const HomeManager = () => {
         techStack: newTechStack
       }
     }));
+  };
+
+  const handleLogoChange = (index, field, value) => {
+    const newLogos = [...formData.hero.logos];
+    newLogos[index] = { ...newLogos[index], [field]: value };
+    setFormData(prev => ({
+      ...prev,
+      hero: {
+        ...prev.hero,
+        logos: newLogos
+      }
+    }));
+  };
+
+  const addLogo = (logoData) => {
+    const newLogo = {
+      src: logoData.src,
+      alt: logoData.alt || "",
+      id: Date.now().toString()
+    };
+    setFormData(prev => ({
+      ...prev,
+      hero: {
+        ...prev.hero,
+        logos: [...prev.hero.logos, newLogo]
+      }
+    }));
+  };
+
+  const removeLogo = (index) => {
+    const newLogos = formData.hero.logos.filter((_, i) => i !== index);
+    setFormData(prev => ({
+      ...prev,
+      hero: {
+        ...prev.hero,
+        logos: newLogos
+      }
+    }));
+  };
+
+  const moveLogo = (index, direction) => {
+    const newLogos = [...formData.hero.logos];
+    const newIndex = direction === 'up' ? index - 1 : index + 1;
+    if (newIndex >= 0 && newIndex < newLogos.length) {
+      [newLogos[index], newLogos[newIndex]] = [newLogos[newIndex], newLogos[index]];
+      setFormData(prev => ({
+        ...prev,
+        hero: {
+          ...prev.hero,
+          logos: newLogos
+        }
+      }));
+    }
+  };
+
+  const handleLogoFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const maxSize = 5 * 1024 * 1024; // 5MB
+      if (file.size > maxSize) {
+        alert("Logo file is too large. Please upload an image smaller than 5MB.");
+        return;
+      }
+      const validTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml', 'image/webp'];
+      if (!validTypes.includes(file.type)) {
+        alert("Invalid image format. Please upload PNG, JPG, SVG, or WebP files.");
+        return;
+      }
+      setLogoFile(file);
+    }
+  };
+
+  const uploadLogo = async () => {
+    if (!logoFile) return;
+
+    setIsLoading(true);
+    try {
+      const timestamp = Date.now();
+      const ext = logoFile.name.split('.').pop();
+      const filename = `home-logo-${timestamp}.${ext}`;
+      const storageRef = ref(storage, `logos/${filename}`);
+      await uploadBytes(storageRef, logoFile);
+      const downloadURL = await getDownloadURL(storageRef);
+      addLogo({
+        src: downloadURL,
+        alt: logoFile.name.replace(/\.[^/.]+$/, "")
+      });
+      setLogoFile(null);
+      alert("Logo uploaded successfully!");
+    } catch (error) {
+      console.error("Logo upload failed:", error);
+      alert("Failed to upload logo. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const addTechStackItem = () => {
@@ -314,6 +445,94 @@ const HomeManager = () => {
         <div className={styles.formSection}>
           <h3>Hero Section</h3>
           
+          <div className={styles.formGroup}>
+            <label>Logos</label>
+            <div className={styles.logosManagement}>
+              <h4>Current Logos ({formData.hero.logos.length})</h4>
+              {formData.hero.logos.map((logo, index) => (
+                <div key={logo.id || index} className={styles.logoItem}>
+                  <div className={styles.logoPreview}>
+                    <img src={logo.src} alt={logo.alt} className={styles.logoThumbnail} />
+                  </div>
+                  <div className={styles.logoInfo}>
+                    <input
+                      type="text"
+                      value={logo.alt}
+                      onChange={(e) => handleLogoChange(index, "alt", e.target.value)}
+                      placeholder="Alt text"
+                      className={styles.formInput}
+                    />
+                    <p className={styles.logoMeta}>
+                      URL: {logo.src}
+                    </p>
+                  </div>
+                  <div className={styles.logoActions}>
+                    <button
+                      type="button"
+                      onClick={() => moveLogo(index, 'up')}
+                      disabled={index === 0}
+                      className={styles.moveButton}
+                    >
+                      ↑
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => moveLogo(index, 'down')}
+                      disabled={index === formData.hero.logos.length - 1}
+                      className={styles.moveButton}
+                    >
+                      ↓
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => removeLogo(index)}
+                      className={styles.removeButton}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              ))}
+              {formData.hero.logos.length === 0 && (
+                <p className={styles.emptyMessage}>No logos uploaded yet.</p>
+              )}
+            </div>
+            <div className={styles.formGroup}>
+              <label>Upload New Logo</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleLogoFileChange}
+                className={styles.formInput}
+              />
+              {logoFile && (
+                <div className={styles.fileInfo}>
+                  <p><strong>Selected file:</strong> {logoFile.name}</p>
+                  <p><strong>Size:</strong> {(logoFile.size / (1024 * 1024)).toFixed(2)} MB</p>
+                  <p><strong>Type:</strong> {logoFile.type}</p>
+                  <div className={styles.uploadActions}>
+                    <button
+                      type="button"
+                      onClick={uploadLogo}
+                      disabled={isLoading}
+                      className={styles.uploadButton}
+                    >
+                      {isLoading ? "Uploading..." : "Upload Logo"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setLogoFile(null)}
+                      disabled={isLoading}
+                      className={styles.cancelButton}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
           <div className={styles.formGroup}>
             <label>Kicker</label>
             <input

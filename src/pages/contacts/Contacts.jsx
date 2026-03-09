@@ -3,7 +3,7 @@ import styles from "./contacts.module.scss";
 import { useData } from "../../context/DataContext";
 
 const Contacts = () => {
-  const { contacts } = useData();
+  const { contacts, home } = useData();
 
   const info = [
     { label: "Email", value: contacts.email },
@@ -19,10 +19,10 @@ const Contacts = () => {
   return (
     <div className={styles.main}>
       <div className={styles.panel}>
-        <p className={styles.kicker}>Let&apos;s talk</p>
-        <h1>Contact</h1>
+        <p className={styles.kicker}>{home.pageHeaders?.contacts?.kicker || "Let's talk"}</p>
+        <h1>{home.pageHeaders?.contacts?.title || "Contact"}</h1>
         <p className={styles.subhead}>
-          Tell us about your product idea, timeframe, and goals. We typically respond within one business day.
+          {home.pageHeaders?.contacts?.subhead || "Tell us about your product idea, timeframe, and goals. We typically respond within one business day."}
         </p>
         <div className={styles.infoGrid}>
           {info.map((item) => (

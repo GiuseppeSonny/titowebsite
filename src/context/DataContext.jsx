@@ -7,6 +7,7 @@ import {
   doc,
   onSnapshot,
   setDoc,
+  getDoc,
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../firebase/firebase";
@@ -55,6 +56,7 @@ const defaultContacts = {
 
 const defaultHome = {
   hero: {
+    logos: [],
     kicker: "Street Artist / 2026",
     title: "Stencils on concrete",
     subtitle: "that glow after dark",
@@ -80,6 +82,33 @@ const defaultHome = {
     url: "",
     title: "",
     enabled: false
+  },
+  pageHeaders: {
+    works: {
+      kicker: "Selected Walls",
+      title: "Recent drops and takeovers",
+      subhead: "Murals, projection pieces, and pop-up installs dripping with neon gradients and raw texture."
+    },
+    internalWorks: {
+      kicker: "Internal works",
+      title: "Lab pieces & experiments",
+      subhead: "Studio-only explorations before they hit the streets."
+    },
+    externalWorks: {
+      kicker: "External works",
+      title: "Commissioned walls & public pieces",
+      subhead: "Client and city collaborations across facades, shutters, and tunnels."
+    },
+    products: {
+      kicker: "Gallery",
+      title: "Products",
+      subhead: "Pure visuals—no text, just the work."
+    },
+    contacts: {
+      kicker: "Let's talk",
+      title: "Contact",
+      subhead: "Tell us about your product idea, timeframe, and goals. We typically respond within one business day."
+    }
   }
 };
 
@@ -151,7 +180,8 @@ export const DataProvider = ({ children }) => {
       doc(db, "home", "main"),
       (snap) => {
         if (snap.exists()) {
-          setHome({ id: snap.id, ...snap.data() });
+          const data = snap.data();
+          setHome(prev => ({ ...prev, ...data })); // merge with defaults to preserve missing fields
         } else {
           setHome(defaultHome);
         }
@@ -281,7 +311,31 @@ export const DataProvider = ({ children }) => {
   // Home update
   const updateHome = async (data) => {
     try {
-      await setDoc(doc(db, "home", "main"), data, { merge: true });
+      const homeRef = doc(db, "home", "main");
+      const homeSnap = await getDoc(homeRef);
+      if (!homeSnap.exists()) {
+        // First time: create the document with full structure
+        await setDoc(homeRef, {
+          hero: {
+            logos: data.hero?.logos || [],
+            kicker: data.hero?.kicker || "",
+            title: data.hero?.title || "",
+            subtitle: data.hero?.subtitle || "",
+            subhead: data.hero?.subhead || "",
+            primaryCta: data.hero?.primaryCta || "",
+            secondaryCta: data.hero?.secondaryCta || "",
+            metrics: data.hero?.metrics || [],
+            currentFocus: data.hero?.currentFocus || { title: "", description: "" },
+            techStack: data.hero?.techStack || [],
+            upcomingDrop: data.hero?.upcomingDrop || { title: "", date: "" },
+          },
+          video: data.video || { enabled: false, videos: [] },
+          highlights: data.highlights || [],
+        });
+      } else {
+        // Document exists: merge
+        await setDoc(homeRef, data, { merge: true });
+      }
     } catch (err) {
       console.error("updateHome failed", err);
       throw err;

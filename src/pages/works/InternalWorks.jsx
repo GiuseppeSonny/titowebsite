@@ -3,7 +3,7 @@ import styles from "./works.module.scss";
 import { useData } from "../../context/DataContext";
 
 const InternalWorks = () => {
-  const { works } = useData();
+  const { works, home } = useData();
   const internalProjects = works.filter((w) => w.category === "internal");
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
@@ -48,9 +48,9 @@ const InternalWorks = () => {
     <div className={styles.main}>
       <div className={styles.headerRow}>
         <div>
-          <p className={styles.kicker}>Internal works</p>
-          <h2>Lab pieces & experiments</h2>
-          <p className={styles.subhead}>Studio-only explorations before they hit the streets.</p>
+          <p className={styles.kicker}>{home.pageHeaders?.internalWorks?.kicker || "Internal works"}</p>
+          <h2>{home.pageHeaders?.internalWorks?.title || "Lab pieces & experiments"}</h2>
+          <p className={styles.subhead}>{home.pageHeaders?.internalWorks?.subhead || "Studio-only explorations before they hit the streets."}</p>
         </div>
       </div>
 
@@ -70,14 +70,6 @@ const InternalWorks = () => {
                 <div className={styles.imageCount}>
                   +{project.images.length}
                 </div>
-              )}
-            </div>
-            <div className={styles.cardHead}>
-              <div className={styles.pill}>In house</div>
-              {project.link && (
-                <a href={project.link} className={styles.link} onClick={(e) => e.stopPropagation()}>
-                  View →
-                </a>
               )}
             </div>
             <h3>{project.title}</h3>
@@ -118,14 +110,6 @@ const InternalWorks = () => {
                 )}
               </div>
               <div className={styles.modalInfo}>
-                <div className={styles.cardHead}>
-                  <div className={styles.pill}>In house</div>
-                  {selectedProject.link && (
-                    <a href={selectedProject.link} className={styles.link}>
-                      View →
-                    </a>
-                  )}
-                </div>
                 <h3>{selectedProject.title}</h3>
                 <p>{selectedProject.desc}</p>
                 <div className={styles.tags}>

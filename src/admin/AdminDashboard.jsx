@@ -9,13 +9,15 @@ import AboutManager from "./AboutManager";
 import ContactsManager from "./ContactsManager";
 import AdminsManager from "./AdminsManager";
 import HomeManager from "./HomeManager";
+import PageHeadersManager from "./PageHeadersManager";
 import styles from "./admin.module.scss";
 
 const TABS = [
   { id: "overview", label: "Overview", icon: "◈" },
   { id: "home", label: "Home", icon: "🏠" },
+  { id: "headers", label: "Headers", icon: "📝" },
   { id: "works", label: "Works", icon: "🖼" },
-  { id: "photos", label: "Products", icon: "�" },
+  { id: "photos", label: "Products", icon: "📷" },
   { id: "events", label: "Events", icon: "📅" },
   { id: "about", label: "About", icon: "👤" },
   { id: "contacts", label: "Contacts", icon: "✉" },
@@ -36,6 +38,7 @@ const AdminDashboard = () => {
   const renderContent = () => {
     switch (activeTab) {
       case "home": return <HomeManager />;
+      case "headers": return <PageHeadersManager />;
       case "works": return <WorksManager />;
       case "photos": return <ProductsManager />;
       case "events": return <EventsManager />;

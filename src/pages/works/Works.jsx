@@ -4,7 +4,7 @@ import styles from "./works.module.scss";
 import { useData } from "../../context/DataContext";
 
 const Works = () => {
-  const { works } = useData();
+  const { works, home } = useData();
   const projects = works.filter((w) => !w.category || w.category === "internal" || w.category === "external");
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(0);
@@ -57,10 +57,10 @@ const Works = () => {
     <div className={styles.main}>
       <div className={styles.headerRow}>
         <div>
-          <p className={styles.kicker}>Selected Walls</p>
-          <h2>Recent drops and takeovers</h2>
+          <p className={styles.kicker}>{home.pageHeaders?.works?.kicker || "Selected Walls"}</p>
+          <h2>{home.pageHeaders?.works?.title || "Recent drops and takeovers"}</h2>
           <p className={styles.subhead}>
-            Murals, projection pieces, and pop-up installs dripping with neon gradients and raw texture.
+            {home.pageHeaders?.works?.subhead || "Murals, projection pieces, and pop-up installs dripping with neon gradients and raw texture."}
           </p>
         </div>
       </div>
@@ -82,12 +82,6 @@ const Works = () => {
                   +{project.images.length}
                 </div>
               )}
-            </div>
-            <div className={styles.cardHead}>
-              <div className={styles.pill}>Fresh paint</div>
-              <a href={project.link} className={styles.link} onClick={(e) => e.stopPropagation()}>
-                View →
-              </a>
             </div>
             <h3>{project.title}</h3>
             <p>{project.desc}</p>
@@ -127,12 +121,6 @@ const Works = () => {
                 )}
               </div>
               <div className={styles.modalInfo}>
-                <div className={styles.cardHead}>
-                  <div className={styles.pill}>Fresh paint</div>
-                  <a href={projects[selectedCard].link} className={styles.link}>
-                    View →
-                  </a>
-                </div>
                 <h3>{projects[selectedCard].title}</h3>
                 <p>{projects[selectedCard].desc}</p>
                 <div className={styles.tags}>

@@ -3,7 +3,7 @@ import styles from "./Products.module.scss";
 import { useData } from "../../context/DataContext";
 
 const Products = () => {
-  const { products } = useData();
+  const { products, home } = useData();
   const [selectedIndex, setSelectedIndex] = useState(null);
 
   // Safety check - ensure products is an array
@@ -30,9 +30,9 @@ const Products = () => {
   return (
     <div className={styles.products} onKeyDown={handleKeyDown} tabIndex={0}>
       <header className={styles.header}>
-        <p className={styles.kicker}>Gallery</p>
-        <h1>Products</h1>
-        <p className={styles.subhead}>Pure visuals—no text, just the work.</p>
+        <p className={styles.kicker}>{home.pageHeaders?.products?.kicker || "Gallery"}</p>
+        <h1>{home.pageHeaders?.products?.title || "Products"}</h1>
+        <p className={styles.subhead}>{home.pageHeaders?.products?.subhead || "Pure visuals—no text, just the work."}</p>
       </header>
 
       <div className={styles.grid}>
