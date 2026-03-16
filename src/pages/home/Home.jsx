@@ -24,6 +24,7 @@ const Home = () => {
   }
   
   // Fallback to auto-generated highlights if no admin selection
+  
   const worksArray = Array.isArray(works) ? works : [];
   if (worksArray.length === 0) return [];
   

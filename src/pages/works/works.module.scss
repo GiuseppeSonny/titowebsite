@@ -1,25 +1,43 @@
 .main {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
   position: relative;
+}
+
+@media (min-width: 768px) {
+  .main {
+    gap: 24px;
+  }
 }
 
 .headerRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   flex-wrap: wrap;
+}
+
+@media (min-width: 768px) {
+  .headerRow {
+    gap: 16px;
+  }
 }
 
 .actions {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
   flex-wrap: wrap;
   position: relative;
   z-index: 101;
+}
+
+@media (min-width: 768px) {
+  .actions {
+    gap: 10px;
+  }
 }
 
 .kicker {
@@ -31,12 +49,19 @@
 
 .subhead {
   color: var(--muted);
-  max-width: 540px;
-  line-height: 1.6;
+  max-width: 480px;
+  line-height: 1.5;
+}
+
+@media (min-width: 768px) {
+  .subhead {
+    max-width: 540px;
+    line-height: 1.6;
+  }
 }
 
 .cta {
-  padding: 13px 18px;
+  padding: 11px 16px;
   border-radius: 999px;
   background: var(--accent);
   color: #0f172a;
@@ -48,6 +73,14 @@
   box-shadow: 0 12px 30px rgba(230, 57, 70, 0.42);
   transition: transform 0.2s ease;
   text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+@media (min-width: 768px) {
+  .cta {
+    padding: 13px 18px;
+    font-size: 0.9rem;
+  }
 }
 
 .cta:hover {
@@ -55,17 +88,24 @@
 }
 
 .devBtn {
-  padding: 13px 18px;
+  padding: 11px 16px;
   border-radius: 999px;
   background: transparent;
   color: var(--text);
   border: 1px solid var(--border);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   text-decoration: none;
   transition: all 0.3s ease;
   cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .devBtn {
+    padding: 13px 18px;
+    font-size: 0.8rem;
+  }
 }
 
 .devBtn:hover {
@@ -80,8 +120,8 @@
 }
 
 .dropdownToggle {
-  padding: 12px 14px;
-  border-radius: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.16);
   background: rgba(255, 255, 255, 0.06);
   color: var(--text);
@@ -91,39 +131,72 @@
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   text-transform: uppercase;
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
+  font-size: 0.85rem;
+}
+
+@media (min-width: 768px) {
+  .dropdownToggle {
+    padding: 12px 14px;
+    border-radius: 12px;
+    gap: 6px;
+    font-size: 0.9rem;
+  }
 }
 
 .chevron {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: #e63946;
+}
+
+@media (min-width: 768px) {
+  .chevron {
+    font-size: 0.8rem;
+  }
 }
 
 .dropdownMenu {
   position: absolute;
   top: calc(100% + 8px);
   left: 0;
-  min-width: 190px;
+  min-width: 170px;
   background: rgba(0, 0, 0, 0.9);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 12px;
+  border-radius: 10px;
   box-shadow: 0 16px 34px rgba(0, 0, 0, 0.6);
-  padding: 10px;
+  padding: 8px;
   display: grid;
-  gap: 6px;
+  gap: 5px;
   z-index: 9999;
   backdrop-filter: blur(10px);
 }
 
+@media (min-width: 768px) {
+  .dropdownMenu {
+    min-width: 190px;
+    padding: 10px;
+    gap: 6px;
+    border-radius: 12px;
+  }
+}
+
 .dropdownMenu a {
   color: var(--text);
-  padding: 10px 12px;
-  border-radius: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid transparent;
   font-weight: 600;
+  font-size: 0.85rem;
+}
+
+@media (min-width: 768px) {
+  .dropdownMenu a {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
 }
 
 .dropdownMenu a:hover {
@@ -177,13 +250,26 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 16px;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+@media (min-width: 480px) {
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
 }
 
 .card {
-  padding: 18px;
-  border-radius: 18px;
+  padding: 16px;
+  border-radius: 16px;
   background: linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.32));
   border: 1px solid rgba(255, 255, 255, 0.16);
   display: grid;
@@ -195,16 +281,36 @@
   transition: transform 0.2s ease;
 }
 
+@media (min-width: 768px) {
+  .card {
+    padding: 18px;
+    border-radius: 18px;
+  }
+}
+
 .card:hover {
   transform: translateY(-2px);
 }
 
 .cardImage {
   width: 100%;
-  height: 200px;
+  height: 160px;
   overflow: hidden;
-  border-radius: 12px;
-  margin-bottom: 12px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+@media (min-width: 480px) {
+  .cardImage {
+    height: 180px;
+    border-radius: 12px;
+  }
+}
+
+@media (min-width: 768px) {
+  .cardImage {
+    height: 200px;
+  }
 }
 
 .cardImage img {
@@ -331,9 +437,9 @@
 .modal {
   background: linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.32));
   border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 18px;
-  padding: 24px;
-  max-width: 500px;
+  border-radius: 16px;
+  padding: 20px;
+  max-width: 450px;
   width: 90%;
   max-height: 80vh;
   overflow-y: auto;
@@ -341,23 +447,41 @@
   box-shadow: 0 22px 44px rgba(0, 0, 0, 0.35);
 }
 
+@media (min-width: 768px) {
+  .modal {
+    padding: 24px;
+    max-width: 500px;
+    border-radius: 18px;
+  }
+}
+
 .closeButton {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 14px;
+  right: 14px;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--text);
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.2s ease;
+}
+
+@media (min-width: 768px) {
+  .closeButton {
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+  }
 }
 
 .closeButton:hover {
@@ -375,8 +499,8 @@
 
 .modalImage {
   position: relative;
-  height: 400px;
-  border-radius: 12px;
+  height: 300px;
+  border-radius: 10px;
   overflow: hidden;
   
   img {
@@ -387,13 +511,27 @@
   }
 }
 
+@media (min-width: 768px) {
+  .modalImage {
+    height: 400px;
+    border-radius: 12px;
+  }
+}
+
 .modalInfo {
   flex: 1;
 }
 
 .modalContent .cardImage {
-  height: 250px;
-  margin-bottom: 16px;
+  height: 200px;
+  margin-bottom: 14px;
+}
+
+@media (min-width: 768px) {
+  .modalContent .cardImage {
+    height: 250px;
+    margin-bottom: 16px;
+  }
 }
 
 .prevButton,
@@ -405,9 +543,9 @@
   color: white;
   border: none;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 18px;
+  width: 36px;
+  height: 36px;
+  font-size: 16px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -417,6 +555,15 @@
   
   &:hover {
     background: rgba(0, 0, 0, 0.8);
+  }
+}
+
+@media (min-width: 768px) {
+  .prevButton,
+  .nextButton {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
   }
 }
 
@@ -517,8 +664,8 @@
 }
 
 .navButton {
-  padding: 10px 16px;
-  border-radius: 12px;
+  padding: 8px 14px;
+  border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.16);
   background: rgba(255, 255, 255, 0.06);
   color: var(--text);
@@ -528,7 +675,15 @@
   cursor: pointer;
   transition: all 0.2s ease;
   text-transform: uppercase;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+}
+
+@media (min-width: 768px) {
+  .navButton {
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+  }
 }
 
 .navButton:hover:not(:disabled) {
@@ -544,6 +699,12 @@
 
 .cardCounter {
   color: var(--muted);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 600;
+}
+
+@media (min-width: 768px) {
+  .cardCounter {
+    font-size: 0.9rem;
+  }
 }
