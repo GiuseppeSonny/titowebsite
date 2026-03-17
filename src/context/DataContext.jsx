@@ -21,9 +21,9 @@ const defaultWorks = [
 ];
 
 const defaultEvents = [
-  { id: "default-e1", title: "Subway Bloom Opening", location: "Brooklyn Station", type: "exhibition", date: "2026-03-15" },
-  { id: "default-e2", title: "Neon Workshop", location: "Manhattan Arts Center", type: "workshop", date: "2026-03-22" },
-  { id: "default-e3", title: "Graffiti Battle", location: "Queens Warehouse", type: "battle", date: "2026-04-05" },
+  { id: "default-e1", title: "Subway Bloom Opening", location: "Brooklyn Station", type: "exhibition", date: "2026-03-15", endDate: "" },
+  { id: "default-e2", title: "Neon Workshop", location: "Manhattan Arts Center", type: "workshop", date: "2026-03-22", endDate: "" },
+  { id: "default-e3", title: "Graffiti Battle", location: "Queens Warehouse", type: "battle", date: "2026-04-05", endDate: "" },
 ];
 
 const defaultProducts = [

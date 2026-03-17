@@ -4,7 +4,7 @@ import styles from "./admin.module.scss";
 
 const EVENT_TYPES = ["exhibition", "workshop", "battle", "projection", "festival", "other"];
 
-const emptyEvent = { title: "", location: "", type: "exhibition", date: "" };
+const emptyEvent = { title: "", location: "", type: "exhibition", date: "", endDate: "" };
 
 const EventsManager = () => {
   const { events, addEvent, updateEvent, deleteEvent } = useData();
@@ -75,8 +75,12 @@ const EventsManager = () => {
               <input name="title" value={form.title} onChange={handleChange} required placeholder="Event title" />
             </label>
             <label>
-              Date
+              Start Date
               <input name="date" type="date" value={form.date} onChange={handleChange} required />
+            </label>
+            <label>
+              End Date (optional)
+              <input name="endDate" type="date" value={form.endDate || ""} onChange={handleChange} min={form.date} />
             </label>
             <label>
               Location
@@ -109,6 +113,16 @@ const EventsManager = () => {
             <div className={styles.itemInfo}>
               <strong>{event.title}</strong>
               <p>{event.location}</p>
+              <div className={styles.eventDates}>
+                {event.date && (
+                  <span>
+                    {new Date(event.date).toLocaleDateString()}
+                    {event.endDate && event.endDate !== event.date && (
+                      <> - {new Date(event.endDate).toLocaleDateString()}</>
+                    )}
+                  </span>
+                )}
+              </div>
               <span className={`${styles.typeBadge} ${styles[event.type]}`}>{event.type}</span>
             </div>
             <div className={styles.itemActions}>
