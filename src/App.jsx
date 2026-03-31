@@ -11,6 +11,7 @@ import ExternalWorks from "./pages/works/ExternalWorks";
 import Home from "./pages/home/Home";
 import Products from "./pages/products/Products";
 import AdminPage from "./admin/AdminPage";
+import Loading from "./pages/loading/Loading";
 import { AuthProvider } from "./context/AuthContext";
 import { DataProvider, useData } from "./context/DataContext";
 
@@ -67,7 +68,20 @@ const AppLayout = ({ theme, toggleTheme }) => {
 
 function App() {
   const [theme, setTheme] = useState("light");
+  const [showLoading, setShowLoading] = useState(true);
   const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (showLoading) {
+    return <Loading />;
+  }
 
   return (
     <Router>
