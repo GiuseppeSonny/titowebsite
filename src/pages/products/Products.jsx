@@ -3,7 +3,7 @@ import styles from "./Products.module.scss";
 import { useData } from "../../context/DataContext";
 
 const Products = () => {
-  const { products, home } = useData();
+  const { products, home, firestoreReady } = useData();
   const [selectedIndex, setSelectedIndex] = useState(null);
 
   // Safety check - ensure products is an array
@@ -26,6 +26,25 @@ const Products = () => {
     if (e.key === "ArrowRight") next();
     if (e.key === "ArrowLeft") prev();
   };
+
+  if (!firestoreReady) {
+    return (
+      <div className={styles.products} style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ textAlign: 'center', opacity: 0.6 }}>
+          <div style={{ 
+            width: 40, 
+            height: 40, 
+            border: '3px solid rgba(255,255,255,0.2)', 
+            borderTopColor: '#fff', 
+            borderRadius: '50%', 
+            animation: 'spin 1s linear infinite',
+            margin: '0 auto 16px'
+          }} />
+          <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.products} onKeyDown={handleKeyDown} tabIndex={0}>

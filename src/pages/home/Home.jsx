@@ -6,7 +6,7 @@ import MediaPlayer from "../../componets/MediaPlayer/MediaPlayer";
 
 const Home = () => {
   const navigate = useNavigate();
-  const { events: rawEvents, products, works, home } = useData();
+  const { events: rawEvents, products, works, home, firestoreReady } = useData();
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
@@ -141,6 +141,25 @@ const Home = () => {
       event.date.getFullYear() === selectedYear
     ).sort((a, b) => a.date - b.date);
   };
+
+  if (!firestoreReady) {
+    return (
+      <div className={styles.home} style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ textAlign: 'center', opacity: 0.6 }}>
+          <div style={{ 
+            width: 40, 
+            height: 40, 
+            border: '3px solid rgba(255,255,255,0.2)', 
+            borderTopColor: '#fff', 
+            borderRadius: '50%', 
+            animation: 'spin 1s linear infinite',
+            margin: '0 auto 16px'
+          }} />
+          <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.home}>

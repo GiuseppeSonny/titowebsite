@@ -2,7 +2,26 @@ import React from "react";
 import { useData } from "../../context/DataContext";
 
 const About = () => {
-  const { about } = useData();
+  const { about, firestoreReady } = useData();
+
+  if (!firestoreReady) {
+    return (
+      <main style={{ maxWidth: "960px", margin: "0 auto", padding: "32px 16px", minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ textAlign: 'center', opacity: 0.6 }}>
+          <div style={{ 
+            width: 40, 
+            height: 40, 
+            border: '3px solid rgba(255,255,255,0.2)', 
+            borderTopColor: '#fff', 
+            borderRadius: '50%', 
+            animation: 'spin 1s linear infinite',
+            margin: '0 auto 16px'
+          }} />
+          <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main style={{ maxWidth: "960px", margin: "0 auto", padding: "32px 16px" }}>

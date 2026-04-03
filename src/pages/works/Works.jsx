@@ -4,7 +4,7 @@ import styles from "./works.module.scss";
 import { useData } from "../../context/DataContext";
 
 const Works = () => {
-  const { works, home } = useData();
+  const { works, home, firestoreReady } = useData();
   const projects = works.filter((w) => !w.category || w.category === "internal" || w.category === "external");
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(0);
@@ -52,6 +52,25 @@ const Works = () => {
   const prevCard = () => {
     setSelectedCard((prev) => (prev - 1 + projects.length) % projects.length);
   };
+
+  if (!firestoreReady) {
+    return (
+      <div className={styles.main} style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ textAlign: 'center', opacity: 0.6 }}>
+          <div style={{ 
+            width: 40, 
+            height: 40, 
+            border: '3px solid rgba(255,255,255,0.2)', 
+            borderTopColor: '#fff', 
+            borderRadius: '50%', 
+            animation: 'spin 1s linear infinite',
+            margin: '0 auto 16px'
+          }} />
+          <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.main}>
