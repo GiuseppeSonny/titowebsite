@@ -126,15 +126,34 @@ export const DataProvider = ({ children }) => {
   const [home, setHome] = useState(defaultHome);
   const [firestoreReady, setFirestoreReady] = useState(false);
   const [ready, setReady] = useState({ works: false, events: false, products: false, about: false, contacts: false, home: false });
+  const [connectionError, setConnectionError] = useState(false);
 
   useEffect(() => {
+    let hasReceivedData = false;
+    
+    // Set a timeout to warn about slow connections (but don't block - defaults work fine)
+    const timeoutId = setTimeout(() => {
+      if (!hasReceivedData) {
+        console.info('Firebase: Using cached/default data while connecting...');
+      }
+    }, 8000); // 8 second info message only
+
+    const markDataReceived = () => {
+      hasReceivedData = true;
+      setConnectionError(false);
+    };
+
     const unsubWorks = onSnapshot(
       collection(db, "works"),
       (snap) => {
         setWorks(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
         setReady((r) => ({ ...r, works: true }));
+        markDataReceived();
       },
-      () => setReady((r) => ({ ...r, works: false }))
+      (error) => {
+        console.error('Works snapshot error:', error);
+        setReady((r) => ({ ...r, works: true })); // Mark as ready even on error (using defaults)
+      }
     );
 
     const unsubEvents = onSnapshot(
@@ -142,8 +161,12 @@ export const DataProvider = ({ children }) => {
       (snap) => {
         setEvents(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
         setReady((r) => ({ ...r, events: true }));
+        markDataReceived();
       },
-      () => setReady((r) => ({ ...r, events: false }))
+      (error) => {
+        console.error('Events snapshot error:', error);
+        setReady((r) => ({ ...r, events: true }));
+      }
     );
 
     const unsubProducts = onSnapshot(
@@ -151,8 +174,12 @@ export const DataProvider = ({ children }) => {
       (snap) => {
         setProducts(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
         setReady((r) => ({ ...r, products: true }));
+        markDataReceived();
       },
-      () => setReady((r) => ({ ...r, products: false }))
+      (error) => {
+        console.error('Products snapshot error:', error);
+        setReady((r) => ({ ...r, products: true }));
+      }
     );
 
     const unsubAbout = onSnapshot(
@@ -164,8 +191,12 @@ export const DataProvider = ({ children }) => {
           setAbout(defaultAbout);
         }
         setReady((r) => ({ ...r, about: true }));
+        markDataReceived();
       },
-      () => setReady((r) => ({ ...r, about: false }))
+      (error) => {
+        console.error('About snapshot error:', error);
+        setReady((r) => ({ ...r, about: true }));
+      }
     );
 
     const unsubContacts = onSnapshot(
@@ -177,8 +208,12 @@ export const DataProvider = ({ children }) => {
           setContacts(defaultContacts);
         }
         setReady((r) => ({ ...r, contacts: true }));
+        markDataReceived();
       },
-      () => setReady((r) => ({ ...r, contacts: false }))
+      (error) => {
+        console.error('Contacts snapshot error:', error);
+        setReady((r) => ({ ...r, contacts: true }));
+      }
     );
 
     const unsubHome = onSnapshot(
@@ -186,18 +221,21 @@ export const DataProvider = ({ children }) => {
       (snap) => {
         if (snap.exists()) {
           const data = snap.data();
-          setHome(prev => ({ ...prev, ...data })); // merge with defaults to preserve missing fields
+          setHome(prev => ({ ...prev, ...data }));
         } else {
           setHome(defaultHome);
         }
         setReady((r) => ({ ...r, home: true }));
+        markDataReceived();
       },
-      () => setReady((r) => ({ ...r, home: false }))
+      (error) => {
+        console.error('Home snapshot error:', error);
+        setReady((r) => ({ ...r, home: true }));
+      }
     );
 
-    setFirestoreReady(true);
-
     return () => {
+      clearTimeout(timeoutId);
       unsubWorks();
       unsubEvents();
       unsubProducts();
@@ -349,7 +387,7 @@ export const DataProvider = ({ children }) => {
 
   return (
     <DataContext.Provider value={{
-      works, events, products, about, contacts, home, firestoreReady,
+      works, events, products, about, contacts, home, firestoreReady, connectionError,
       addWork, updateWork, deleteWork,
       addEvent, updateEvent, deleteEvent,
       addProduct, updateProduct, deleteProduct,

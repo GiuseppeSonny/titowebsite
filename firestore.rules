@@ -1,9 +1,9 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Allow read access to all collections for authenticated users
+    // Allow public read access for all collections
     match /{document=**} {
-      allow read: if request.auth != null;
+      allow read: if true;
     }
     
     // Helper: check if current user is one of the three admins
@@ -20,45 +20,45 @@ service cloud.firestore {
       allow read, write: if isAdmin();
     }
     
-    // Contacts collection - admins can write, authenticated users can read
+    // Contacts collection - admins can write, public can read
     match /contacts/{contactId} {
-      allow read: if request.auth != null;
+      allow read: if true;
       allow write: if isAdmin();
     }
     
-    // About collection - admins can write, authenticated users can read
+    // About collection - admins can write, public can read
     match /about/{aboutId} {
-      allow read: if request.auth != null;
+      allow read: if true;
       allow write: if isAdmin();
     }
     
-    // Home collection - admins can write, authenticated users can read
+    // Home collection - admins can write, public can read
     match /home/{homeId} {
-      allow read: if request.auth != null;
+      allow read: if true;
       allow write: if isAdmin();
     }
     
-    // Events collection - admins can write, authenticated users can read
+    // Events collection - admins can write, public can read
     match /events/{eventId} {
-      allow read: if request.auth != null;
+      allow read: if true;
       allow write: if isAdmin();
     }
     
-    // Works collection - admins can write, authenticated users can read
+    // Works collection - admins can write, public can read
     match /works/{workId} {
-      allow read: if request.auth != null;
+      allow read: if true;
       allow write: if isAdmin();
     }
     
-    // Photos collection - admins can write, authenticated users can read
+    // Photos collection - admins can write, public can read
     match /photos/{photoId} {
-      allow read: if request.auth != null;
+      allow read: if true;
       allow write: if isAdmin();
     }
     
-    // Products collection - admins can write, authenticated users can read
+    // Products collection - admins can write, public can read
     match /products/{productId} {
-      allow read: if request.auth != null;
+      allow read: if true;
       allow write: if isAdmin();
     }
   }

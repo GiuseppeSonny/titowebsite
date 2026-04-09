@@ -457,37 +457,41 @@
 
 .closeButton {
   position: absolute;
-  top: 14px;
-  right: 14px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  top: 12px;
+  right: 12px;
+  background: rgba(230, 57, 70, 0.9);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text);
-  font-size: 18px;
+  color: #fff;
+  font-size: 22px;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.2s ease;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  line-height: 1;
 }
 
 @media (min-width: 768px) {
   .closeButton {
-    top: 16px;
-    right: 16px;
-    width: 32px;
-    height: 32px;
-    font-size: 20px;
+    top: 14px;
+    right: 14px;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
   }
 }
 
 .closeButton:hover {
-  background: rgba(255, 71, 87, 0.2);
-  border-color: rgba(230, 57, 70, 0.4);
+  background: rgba(200, 30, 50, 1);
+  border-color: rgba(255, 255, 255, 0.5);
   transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
 }
 
 .modalContent {
@@ -602,15 +606,15 @@
 }
 
 :global(.theme-light) .closeButton {
-  background: rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  color: #1f2937;
+  background: rgba(230, 57, 70, 0.9);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  color: #fff;
 }
 
 :global(.theme-light) .closeButton:hover {
-  background: rgba(230, 57, 70, 0.1);
-  border-color: rgba(230, 57, 70, 0.3);
-  color: #e63946;
+  background: rgba(200, 30, 50, 1);
+  border-color: rgba(255, 255, 255, 0.6);
+  color: #fff;
 }
 
 :global(.theme-light) .modalNavigation {
